@@ -1,67 +1,21 @@
-import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
+import { App, Modal, Plugin, PluginSettingTab, Setting } from 'obsidian';
 
-// Remember to rename these classes and interfaces!
+import { DefaultSettings, KindleImportPluginSettings } from 'src/settings/pluginSettings';
+import { KindleSelectionModal } from 'src/components/kindleSelectionModal';
 
-interface MyPluginSettings {
-	mySetting: string;
-}
 
-const DEFAULT_SETTINGS: MyPluginSettings = {
-	mySetting: 'default'
-}
-
-export default class MyPlugin extends Plugin {
-	settings: MyPluginSettings;
+export default class KindleImportPlugin extends Plugin {
+	settings: KindleImportPluginSettings;
 
 	async onload() {
 		await this.loadSettings();
 
-		// This creates an icon in the left ribbon.
-		const ribbonIconEl = this.addRibbonIcon('dice', 'Sample Plugin', (evt: MouseEvent) => {
-			// Called when the user clicks the icon.
-			new Notice('This is a notice!');
-		});
-		// Perform additional things with the ribbon
-		ribbonIconEl.addClass('my-plugin-ribbon-class');
-
-		// This adds a status bar item to the bottom of the app. Does not work on mobile apps.
-		const statusBarItemEl = this.addStatusBarItem();
-		statusBarItemEl.setText('Status Bar Text');
-
 		// This adds a simple command that can be triggered anywhere
 		this.addCommand({
-			id: 'open-sample-modal-simple',
-			name: 'Open sample modal (simple)',
+			id: 'kindle-import',
+			name: 'Import Kindle Notebook',
 			callback: () => {
-				new SampleModal(this.app).open();
-			}
-		});
-		// This adds an editor command that can perform some operation on the current editor instance
-		this.addCommand({
-			id: 'sample-editor-command',
-			name: 'Sample editor command',
-			editorCallback: (editor: Editor, view: MarkdownView) => {
-				console.log(editor.getSelection());
-				editor.replaceSelection('Sample Editor Command');
-			}
-		});
-		// This adds a complex command that can check whether the current state of the app allows execution of the command
-		this.addCommand({
-			id: 'open-sample-modal-complex',
-			name: 'Open sample modal (complex)',
-			checkCallback: (checking: boolean) => {
-				// Conditions to check
-				const markdownView = this.app.workspace.getActiveViewOfType(MarkdownView);
-				if (markdownView) {
-					// If checking is true, we're simply "checking" if the command can be run.
-					// If checking is false, then we want to actually perform the operation.
-					if (!checking) {
-						new SampleModal(this.app).open();
-					}
-
-					// This command will only show up in Command Palette when the check function returns true
-					return true;
-				}
+				new KindleSelectionModal(this.app).open();
 			}
 		});
 
@@ -83,7 +37,7 @@ export default class MyPlugin extends Plugin {
 	}
 
 	async loadSettings() {
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+		this.settings = Object.assign({}, DefaultSettings, await this.loadData());
 	}
 
 	async saveSettings() {
@@ -121,11 +75,33 @@ class SampleSettingTab extends PluginSettingTab {
 		containerEl.empty();
 
 		new Setting(containerEl)
-			.setName('Setting #1')
-			.setDesc('It\'s a secret')
+			.setName('Notebook Location')
+			.setDesc('Path to notebook folder')
 			.addText(text => text
-				.setPlaceholder('Enter your secret')
-				.setValue(this.plugin.settings.mySetting)
+				.setPlaceholder('Enter the path')
+				.setValue(this.plugin.settings.notebooksLocation)
+				.onChange(async (value) => {
+					this.plugin.settings.mySetting = value;
+					await this.plugin.saveSettings();
+				}));
+
+			new Setting(containerEl)
+				.setName('Book Notes Location')
+				.setDesc('Path to book notes folder')
+				.addText(text => text
+					.setPlaceholder('Enter the path')
+					.setValue(this.plugin.settings.exportLocation)
+					.onChange(async (value) => {
+						this.plugin.settings.mySetting = value;
+						await this.plugin.saveSettings();
+					}));
+
+		new Setting(containerEl)
+			.setName('Goodreads User ID')
+			.setDesc('ID of your Goodreads user')
+			.addText(text => text
+				.setPlaceholder('Enter the user ID')
+				.setValue(this.plugin.settings.goodreadsUserID)
 				.onChange(async (value) => {
 					this.plugin.settings.mySetting = value;
 					await this.plugin.saveSettings();
