@@ -15,7 +15,7 @@ export default class KindleImportPlugin extends Plugin {
 			id: 'kindle-import',
 			name: 'Import Kindle Notebook',
 			callback: () => {
-				new KindleSelectionModal(this.app).open();
+				new KindleSelectionModal(this.app, this.settings).open();
 			}
 		});
 
@@ -81,7 +81,7 @@ class SampleSettingTab extends PluginSettingTab {
 				.setPlaceholder('Enter the path')
 				.setValue(this.plugin.settings.notebooksLocation)
 				.onChange(async (value) => {
-					this.plugin.settings.mySetting = value;
+					this.plugin.settings.notebooksLocation = value;
 					await this.plugin.saveSettings();
 				}));
 
@@ -92,7 +92,7 @@ class SampleSettingTab extends PluginSettingTab {
 					.setPlaceholder('Enter the path')
 					.setValue(this.plugin.settings.exportLocation)
 					.onChange(async (value) => {
-						this.plugin.settings.mySetting = value;
+						this.plugin.settings.exportLocation = value;
 						await this.plugin.saveSettings();
 					}));
 
@@ -103,7 +103,7 @@ class SampleSettingTab extends PluginSettingTab {
 				.setPlaceholder('Enter the user ID')
 				.setValue(this.plugin.settings.goodreadsUserID)
 				.onChange(async (value) => {
-					this.plugin.settings.mySetting = value;
+					this.plugin.settings.goodreadsUserID = value;
 					await this.plugin.saveSettings();
 				}));
 	}

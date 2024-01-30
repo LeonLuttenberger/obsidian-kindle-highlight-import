@@ -1,4 +1,5 @@
-import { Notice, SuggestModal, TFile } from 'obsidian';
+import { App, Notice, SuggestModal, TFile } from 'obsidian';
+import { KindleImportPluginSettings } from 'src/settings/pluginSettings';
 
 interface KindleNotebookPath {
   filename: string;
@@ -6,6 +7,13 @@ interface KindleNotebookPath {
 }
 
 export class KindleSelectionModal extends SuggestModal<KindleNotebookPath> {
+  settings: KindleImportPluginSettings;
+
+  constructor(app: App, settings: KindleImportPluginSettings) {
+    super(app);
+
+    this.settings = settings;
+  }
 
   static fileToInterface(file: TFile): KindleNotebookPath {
     return {filename: file.name, fullPath: file.path};
@@ -14,7 +22,7 @@ export class KindleSelectionModal extends SuggestModal<KindleNotebookPath> {
     // Returns all available suggestions.
     getSuggestions(query: string): KindleNotebookPath[] {
       const htmlFiles = this.app.vault.getFiles().filter(
-        (file) => file.extension === "html" && file.path.startsWith("Attachments/Kindle/")
+        (file) => file.extension === "html" && file.path.startsWith(this.settings.notebooksLocation)
       ).map((file) => KindleSelectionModal.fileToInterface(file));
 
       return htmlFiles.filter((notebook) =>
