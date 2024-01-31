@@ -1,10 +1,10 @@
 export interface KindleImportPluginSettings {
-	notebooksLocation: string;
-	exportLocation: string;
-	goodreadsUserID?: string;
+  notebooksLocation: string;
+  exportLocation: string;
+  goodreadsUserID?: string;
 }
 
 export const DefaultSettings: KindleImportPluginSettings = {
-	notebooksLocation: 'default/',
-	exportLocation: '',
-}
+  notebooksLocation: "default/",
+  exportLocation: "",
+};
