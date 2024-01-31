@@ -78,7 +78,11 @@ function stringifyBookHighlights(
   return lines.join("\n");
 }
 
-export function exportToMarkdown(notebook: BookHighlights, app: App, settings: KindleImportPluginSettings): void {
+export async function exportToMarkdown(
+  notebook: BookHighlights,
+  app: App,
+  settings: KindleImportPluginSettings,
+): Promise<void> {
   const md_file_name = getMdFileTitle(notebook.title);
 
   let md_file_path: string;
@@ -93,10 +97,13 @@ export function exportToMarkdown(notebook: BookHighlights, app: App, settings: K
     return;
   }
 
-  queryGoodreadsForBookID(notebook.title, notebook.authors).then((goodreadsBookID) => {
-    const text = stringifyBookHighlights(notebook, goodreadsBookID, settings.goodreadsUserID);
+  let goodreadsBookID: string | undefined;
+  if (settings.queryGoodreads) {
+    goodreadsBookID = await queryGoodreadsForBookID(notebook.title, notebook.authors);
+  }
 
-    app.vault.create(md_file_path, text);
-    new Notice(`Exported notes for ${notebook.title}`);
-  });
+  const text = stringifyBookHighlights(notebook, goodreadsBookID, settings.goodreadsUserID);
+
+  app.vault.create(md_file_path, text);
+  new Notice(`Exported notes for ${notebook.title}`);
 }

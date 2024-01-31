@@ -82,6 +82,16 @@ class SampleSettingTab extends PluginSettingTab {
       );
 
     new Setting(containerEl)
+      .setName("Should the export query Goodreads?")
+      .setDesc("If checked, the plugin will query Goodreads to generate a link to the book page")
+      .addToggle((toggle) =>
+        toggle.setValue(this.plugin.settings.queryGoodreads).onChange(async (value) => {
+          this.plugin.settings.queryGoodreads = value;
+          await this.plugin.saveSettings();
+        }),
+      );
+
+    new Setting(containerEl)
       .setName("Goodreads User ID")
       .setDesc("ID of your Goodreads user")
       .addText((text) =>
