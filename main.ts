@@ -1,4 +1,4 @@
-import { App, Modal, Plugin, PluginSettingTab, Setting } from "obsidian";
+import { App, Plugin, PluginSettingTab, Setting } from "obsidian";
 
 import { DefaultSettings, KindleImportPluginSettings } from "src/settings/pluginSettings";
 import { KindleSelectionModal } from "src/components/kindleSelectionModal";
@@ -42,26 +42,10 @@ export default class KindleImportPlugin extends Plugin {
   }
 }
 
-class SampleModal extends Modal {
-  constructor(app: App) {
-    super(app);
-  }
-
-  onOpen() {
-    const { contentEl } = this;
-    contentEl.setText("Woah!");
-  }
-
-  onClose() {
-    const { contentEl } = this;
-    contentEl.empty();
-  }
-}
-
 class SampleSettingTab extends PluginSettingTab {
-  plugin: MyPlugin;
+  plugin: KindleImportPlugin;
 
-  constructor(app: App, plugin: MyPlugin) {
+  constructor(app: App, plugin: KindleImportPlugin) {
     super(app, plugin);
     this.plugin = plugin;
   }
@@ -103,7 +87,7 @@ class SampleSettingTab extends PluginSettingTab {
       .addText((text) =>
         text
           .setPlaceholder("Enter the user ID")
-          .setValue(this.plugin.settings.goodreadsUserID)
+          .setValue(this.plugin.settings.goodreadsUserID ?? "")
           .onChange(async (value) => {
             this.plugin.settings.goodreadsUserID = value;
             await this.plugin.saveSettings();
