@@ -1,12 +1,9 @@
-import { App, Notice, SuggestModal, TFile } from 'obsidian';
+import { App, SuggestModal, TFile } from 'obsidian';
+import { exportToMarkdown } from 'src/processing/export';
+import { kindleHTMLParser } from 'src/processing/parser';
 import { KindleImportPluginSettings } from 'src/settings/pluginSettings';
 
-interface KindleNotebookPath {
-  filename: string;
-  fullPath: string;
-}
-
-export class KindleSelectionModal extends SuggestModal<KindleNotebookPath> {
+export class KindleSelectionModal extends SuggestModal<TFile> {
   settings: KindleImportPluginSettings;
 
   constructor(app: App, settings: KindleImportPluginSettings) {
@@ -15,28 +12,27 @@ export class KindleSelectionModal extends SuggestModal<KindleNotebookPath> {
     this.settings = settings;
   }
 
-  static fileToInterface(file: TFile): KindleNotebookPath {
-    return {filename: file.name, fullPath: file.path};
-  }
-
     // Returns all available suggestions.
-    getSuggestions(query: string): KindleNotebookPath[] {
+    getSuggestions(query: string): TFile[] {
       const htmlFiles = this.app.vault.getFiles().filter(
         (file) => file.extension === "html" && file.path.startsWith(this.settings.notebooksLocation)
-      ).map((file) => KindleSelectionModal.fileToInterface(file));
+      );
 
-      return htmlFiles.filter((notebook) =>
-        notebook.filename.toLowerCase().includes(query.toLowerCase())
+      return htmlFiles.filter((file) =>
+        file.name.toLowerCase().includes(query.toLowerCase())
       );
     }
   
     // Renders each suggestion item.
-    renderSuggestion(book: KindleNotebookPath, el: HTMLElement) {
-      el.createEl("div", { text: book.filename });
+    renderSuggestion(book: TFile, el: HTMLElement): void {
+      el.createEl("div", { text: book.name });
     }
   
     // Perform action on the selected suggestion.
-    onChooseSuggestion(book: KindleNotebookPath, evt: MouseEvent | KeyboardEvent) {
-      new Notice(`Selected ${book.filename}`);
+    onChooseSuggestion(file: TFile, evt: MouseEvent | KeyboardEvent): void {
+      this.app.vault.cachedRead(file).then((content) => {
+        const notebook = kindleHTMLParser(content);
+        exportToMarkdown(notebook, this.app, this.settings);
+      });
     }
   }
