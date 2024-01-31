@@ -1,9 +1,9 @@
 {
-  "id": "kindle-notebook-import",
-  "name": "Kindle Notebook Import",
+  "id": "kindle-highlights-import",
+  "name": "Kindle Highlights Import",
   "version": "1.0.0",
   "minAppVersion": "0.15.0",
-  "description": "Demonstrates some of the capabilities of the Obsidian API.",
+  "description": "Converts the Kindle highlight export HTML into an Obsidian note.",
   "author": "Obsidian",
   "authorUrl": "https://obsidian.md",
   "fundingUrl": "https://obsidian.md/pricing",

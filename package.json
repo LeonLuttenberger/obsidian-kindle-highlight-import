@@ -1,7 +1,7 @@
 {
-  "name": "obsidian-sample-plugin",
+  "name": "obsidian-kindle-highlights-import-plugin",
   "version": "1.0.0",
-  "description": "This is a sample plugin for Obsidian (https://obsidian.md)",
+  "description": "Plugin for Obsidian which converts Kindle highlights exports to notes",
   "main": "main.js",
   "scripts": {
     "dev": "node esbuild.config.mjs",
