@@ -1,0 +1,42 @@
+name: Build and test project
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+        - main
+
+permissions:
+  contents: read
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    name: Check code formatting
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install Requirements
+        run: npm install
+      - name: Check Format
+        run: npm run check-format
+      - name: Lint
+        run: npm run lint
+
+  build:
+    runs-on: ubuntu-latest
+    name: Build project
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install Requirements
+        run: npm install
+      - name: Build
+        run: npm run build
