@@ -1,6 +1,7 @@
 import { App, Notice } from "obsidian";
 import { BookHighlights, Highlight, ChapterHighlights } from "src/processing/parser";
 import { KindleImportPluginSettings } from "src/settings/pluginSettings";
+import { queryGoodreadsForBookID } from "src/processing/goodreads";
 
 function getMdFileTitle(bookTitle: string): string {
   if (bookTitle.includes(":")) {
@@ -29,7 +30,11 @@ function highlightToQuoteString(highlight: Highlight): string {
   return `${titleLine}\n${textLine}`;
 }
 
-function stringifyBookHighlights(notebook: BookHighlights, settings: KindleImportPluginSettings): string {
+function stringifyBookHighlights(
+  notebook: BookHighlights,
+  goodreadsBookID: string | undefined,
+  goodreadsUserID: string | undefined,
+): string {
   const lines: string[] = [];
 
   // markdown properties
@@ -40,7 +45,18 @@ function stringifyBookHighlights(notebook: BookHighlights, settings: KindleImpor
   lines.push("---");
 
   // markdown contents
-  lines.push(notebook.title);
+  if (goodreadsBookID) {
+    const bookURL = `https://www.goodreads.com/book/show/${goodreadsBookID}`;
+    lines.push(`[${notebook.title}](${bookURL})`);
+  } else {
+    lines.push(notebook.title);
+  }
+
+  if (goodreadsUserID && goodreadsBookID) {
+    const highlightsURL = `https://www.goodreads.com/notes/${goodreadsBookID}/${goodreadsUserID}`;
+    lines.push(`[My Kindle Notes & Highlights](${highlightsURL})`);
+  }
+
   lines.push("");
 
   lines.push(`Author: ${notebook.authors}`);
@@ -77,8 +93,10 @@ export function exportToMarkdown(notebook: BookHighlights, app: App, settings: K
     return;
   }
 
-  const text = stringifyBookHighlights(notebook, settings);
+  queryGoodreadsForBookID(notebook.title, notebook.authors).then((goodreadsBookID) => {
+    const text = stringifyBookHighlights(notebook, goodreadsBookID, settings.goodreadsUserID);
 
-  app.vault.create(md_file_path, text);
-  new Notice(`Exported notes for ${notebook.title}`);
+    app.vault.create(md_file_path, text);
+    new Notice(`Exported notes for ${notebook.title}`);
+  });
 }

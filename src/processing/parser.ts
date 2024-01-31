@@ -31,11 +31,12 @@ function getElementValue(htmlDoc: Document, className: string): string {
   return textContent.trim();
 }
 
-function getPageNumber(text: string): number {
+function getPageNumber(text: string): number | undefined {
   const matches = text.match(/Page (\d+)/);
   if (matches) {
     return Number(matches[1]);
   }
+  return undefined;
 }
 
 function getNoteType(text: string): "quote" | "note" {
