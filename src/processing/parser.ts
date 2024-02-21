@@ -41,7 +41,7 @@ function getPageNumber(text: string): number | undefined {
 
 function processAuthorName(text: string): string {
   if (text.contains(",")) {
-    const nameComponents = text.split(",")
+    const nameComponents = text.split(",");
 
     if (nameComponents.length == 2) {
       return nameComponents[1].trim() + " " + nameComponents[0].trim();
@@ -52,7 +52,7 @@ function processAuthorName(text: string): string {
 }
 
 function parseAuthors(text: string): string[] {
-  return text.split(";").map(processAuthorName)
+  return text.split(";").map(processAuthorName);
 }
 
 function getNoteType(text: string): "quote" | "note" {
