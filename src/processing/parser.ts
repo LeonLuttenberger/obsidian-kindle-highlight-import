@@ -11,7 +11,7 @@ export interface ChapterHighlights {
 
 export interface BookHighlights {
   title: string;
-  authors: string;
+  authors: string[];
   chapterHighlights: ChapterHighlights[];
 }
 
@@ -39,6 +39,22 @@ function getPageNumber(text: string): number | undefined {
   return undefined;
 }
 
+function processAuthorName(text: string): string {
+  if (text.contains(",")) {
+    const nameComponents = text.split(",")
+
+    if (nameComponents.length == 2) {
+      return nameComponents[1].trim() + " " + nameComponents[0].trim();
+    }
+  }
+
+  return text;
+}
+
+function parseAuthors(text: string): string[] {
+  return text.split(";").map(processAuthorName)
+}
+
 function getNoteType(text: string): "quote" | "note" {
   if (text.startsWith("Highlight")) {
     return "quote";
@@ -52,7 +68,7 @@ export function kindleHTMLParser(text: string): BookHighlights {
   const htmlDoc = parser.parseFromString(text, "text/html");
 
   const title = getElementValue(htmlDoc, "bookTitle");
-  const authors = getElementValue(htmlDoc, "authors");
+  const authors = parseAuthors(getElementValue(htmlDoc, "authors"));
   const chapterHighlights: ChapterHighlights[] = [];
 
   Array.from(htmlDoc.querySelectorAll(".sectionHeading,.noteText")).forEach((element) => {
