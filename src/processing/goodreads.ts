@@ -8,8 +8,8 @@ function getBookID(text: string): string {
   throw new Error("No book ID found in text: " + text);
 }
 
-export async function queryGoodreadsForBookID(bookTitle: string, authors: string): Promise<string | undefined> {
-  const encodedQuery = encodeURIComponent(bookTitle + " " + authors);
+export async function queryGoodreadsForBookID(bookTitle: string, authors: string[]): Promise<string | undefined> {
+  const encodedQuery = encodeURIComponent(bookTitle + " " + authors.join(" "));
   const url = `https://www.goodreads.com/search?q=${encodedQuery}`;
 
   const response = await requestUrl({ url: url });
