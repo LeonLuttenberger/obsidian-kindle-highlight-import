@@ -1,11 +1,12 @@
 import { requestUrl } from "obsidian";
 
-function getBookID(text: string): string {
-  const matches = text.match("\\/book\\/show\\/([A-Za-z0-9\\-]+)\\?.*");
+function getBookID(text: string): string | undefined {
+  const matches = text.match(/\/book\/show\/([A-Za-z0-9\-\.\_]+)\?.*/);
   if (matches) {
     return matches[1];
   }
-  throw new Error("No book ID found in text: " + text);
+  console.log("No book ID found in text: " + text);
+  return undefined;
 }
 
 export async function queryGoodreadsForBookID(bookTitle: string, authors: string[]): Promise<string | undefined> {
