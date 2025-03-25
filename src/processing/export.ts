@@ -105,5 +105,9 @@ export async function exportToMarkdown(
   const text = stringifyBookHighlights(notebook, goodreadsBookID, settings.goodreadsUserID);
 
   app.vault.create(md_file_path, text);
+
+  if (settings.queryGoodreads && !goodreadsBookID) {
+    new Notice("No Goodreads book ID found. Check the console for more information.");
+  }
   new Notice(`Exported notes for ${notebook.title}`);
 }
