@@ -1,6 +1,7 @@
 import { requestUrl } from "obsidian";
 
 function getBookID(text: string): string | undefined {
+  //eslint-disable-next-line no-useless-escape
   const matches = text.match(/\/book\/show\/([A-Za-z0-9\-\.\_]+)\?.*/);
   if (matches) {
     return matches[1];
