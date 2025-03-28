@@ -40,7 +40,7 @@ function getPageNumber(text: string): number | undefined {
 }
 
 function processAuthorName(text: string): string {
-  if (text.contains(",")) {
+  if (text.includes(",")) {
     const nameComponents = text.split(",");
 
     if (nameComponents.length == 2) {
