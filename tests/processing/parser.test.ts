@@ -49,12 +49,10 @@ const htmlString = `
 
 </body>
 </html>
-`
+`;
 
 describe("Parser", () => {
-
- test("should parse Kindle highlights correctly", () => {
-    
+  test("should parse Kindle highlights correctly", () => {
     const bookHighlights: BookHighlights = kindleHTMLParser(htmlString);
 
     expect(bookHighlights.title).toBe("Armageddon Averted: The Soviet Collapse, 1970-2000");
@@ -84,6 +82,5 @@ describe("Parser", () => {
     expect(chapterHighlights[1].highlights[1].text).toBe("First note.");
     expect(chapterHighlights[1].highlights[1].type).toBe("note");
     expect(chapterHighlights[1].highlights[1].pageNumber).toBe(28);
- });
-
+  });
 });
