@@ -11,25 +11,9 @@ permissions:
   contents: read
 
 jobs:
-  format:
+  validate:
     runs-on: ubuntu-latest
-    name: Check code formatting
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
-      - name: Install Requirements
-        run: npm install
-      - name: Check Format
-        run: npm run check-format
-      - name: Lint
-        run: npm run lint
-
-  build:
-    runs-on: ubuntu-latest
-    name: Build project
+    name: Validate Build
     steps:
       - uses: actions/checkout@v4
       - name: Setup node
@@ -40,3 +24,17 @@ jobs:
         run: npm install
       - name: Build
         run: npm run build
+      - name: Check Format
+        run: npm run format:check
+      - name: Lint
+        run: npm run lint:check
+      - name: Test
+        run: npm run test
+      - name: Archive Verified Build
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-verified
+          path: |
+            main.js
+            manifest.json
+            styles.css
