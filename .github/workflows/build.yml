@@ -1,4 +1,5 @@
 name: Build and test project
+
 on:
   push:
     branches:
@@ -11,28 +12,89 @@ permissions:
   contents: read
 
 jobs:
-  validate:
+  setup:
     runs-on: ubuntu-latest
-    name: Validate Build
+    name: Setup & Install
+    outputs:
+      cache-hit: ${{ steps.cache-node-modules.outputs.cache-hit }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Setup node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: "18"
-      - name: Install Requirements
+      - name: Cache node_modules
+        id: cache-node-modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+      - name: Install Dependencies
         run: npm install
-      - name: Build
+      - name: Build Project
         run: npm run build
-      - name: Check Format
+      - name: Save Build Output
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-temp
+          path: |
+            main.js
+            manifest.json
+            styles.css
+         retention-days: 1  # auto-expire quickly
+
+  lint_and_format:
+    runs-on: ubuntu-latest
+    name: Lint and Format Check
+    needs: setup
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+      - name: Restore node_modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+      - name: Format Check
         run: npm run format:check
-      - name: Lint
+      - name: Lint Check
         run: npm run lint:check
-      - name: Test
-        run: npm run test
-      - name: Archive Verified Build
+
+  test_and_coverage:
+    runs-on: ubuntu-latest
+    name: Test and Coverage
+    needs: setup
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+      - name: Restore node_modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+      - name: Run Tests
+        run: npm run test -- --coverage
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
+
+  upload_build:
+    runs-on: ubuntu-latest
+    name: Upload Build Artifacts
+    needs: [lint_and_format, test_and_coverage]
+    steps:
+      - name: Download Build Output
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-temp
+      - name: Upload Final Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: dist-verified
