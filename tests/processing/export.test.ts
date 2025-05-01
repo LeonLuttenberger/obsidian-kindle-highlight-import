@@ -76,17 +76,17 @@ describe("Export", () => {
   test("adds Goodreads link if enabled", async () => {
     settings.queryGoodreads = true;
     settings.goodreadsUserID = "12345";
+    const goodreadsBookId = "67890";
 
     const mockQueryGoodreadsForBookID = jest.mocked(queryGoodreadsForBookID);
-    mockQueryGoodreadsForBookID.mockResolvedValue("67890");
+    mockQueryGoodreadsForBookID.mockResolvedValue(goodreadsBookId);
   
     app.vault.getAbstractFileByPath.mockReturnValue(null);
 
     await exportToMarkdown(notebook, app, settings);
     
     const expectedPath = "exports/Sample Book.md";
-    // expect(queryGoodreadsForBookID).toha
-    expect(app.vault.create).toHaveBeenCalledWith(expectedPath, expect.stringContaining("https://www.goodreads.com/book/show/67890"));
+    expect(app.vault.create).toHaveBeenCalledWith(expectedPath, expect.stringContaining(`https://www.goodreads.com/book/show/${goodreadsBookId}`));
   });
   
 });
