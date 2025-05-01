@@ -42,6 +42,7 @@ jobs:
             main.js
             manifest.json
             styles.css
+         retention-days: 1  # auto-expire quickly
 
   lint_and_format:
     runs-on: ubuntu-latest
