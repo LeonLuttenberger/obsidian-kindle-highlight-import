@@ -6,4 +6,7 @@ module.exports = {
   },
   moduleFileExtensions: ["js", "ts"],
   testEnvironment: "jsdom",
+  moduleNameMapper: {
+    "^src/(.*)$": "<rootDir>/src/$1",
+  },
 };
