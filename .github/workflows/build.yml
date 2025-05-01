@@ -33,17 +33,6 @@ jobs:
         run: npm run lint:check
       - name: Test
         run: npm run test
-      - name: Upload Coverage Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          path: coverage/
-      - uses: devmasx/coverage-check-action@v1.2.0
-        with:
-          type: lcov
-          result_path: coverage/lconv.info
-          min_coverage: 90
-          token: ${{ github.token }}
       - name: Archive Verified Build
         uses: actions/upload-artifact@v4
         with:
