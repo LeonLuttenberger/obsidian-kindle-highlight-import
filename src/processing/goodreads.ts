@@ -24,7 +24,7 @@ export async function queryGoodreadsForBookID(bookTitle: string, authors: string
     return undefined;
   }
 
-  const elementHref = elements[0].getAttr("href");
+  const elementHref = elements[0].getAttribute("href");
   if (!elementHref) {
     return undefined;
   }
