@@ -1,7 +1,7 @@
 {
   "id": "kindle-highlights-import",
   "name": "Kindle Highlights Import",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "minAppVersion": "0.15.0",
   "description": "Converts the Kindle highlight export HTML into an Obsidian note.",
   "author": "Obsidian",
