@@ -8,8 +8,11 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    name: Action Lint
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Run actionlint
         uses: reviewdog/action-actionlint@v1
         with:
