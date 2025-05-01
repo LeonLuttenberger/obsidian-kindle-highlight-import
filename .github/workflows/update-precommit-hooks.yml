@@ -1,0 +1,41 @@
+name: Auto-update Pre-commit Hooks
+
+on:
+  schedule:
+    - cron: "0 8 1 * *" # Run at 08:00 UTC on the 1st of every month
+  workflow_dispatch:
+
+jobs:
+  update-precommit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install pre-commit
+        run: pip install pre-commit
+
+      - name: Run pre-commit autoupdate
+        run: pre-commit autoupdate
+
+      - name: Commit updated hooks
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git checkout -b chore/update-precommit-hooks || git checkout chore/update-precommit-hooks
+          git add .pre-commit-config.yaml
+          git commit -m "chore: auto-update pre-commit hooks" || echo "No changes to commit"
+          git push --set-upstream origin chore/update-precommit-hooks || echo "No changes to push"
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          title: "chore: auto-update pre-commit hooks"
+          body: "This PR was created automatically by a scheduled workflow to keep pre-commit hooks up to date."
+          branch: chore/update-precommit-hooks
+          labels: dependencies
