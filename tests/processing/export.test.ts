@@ -11,7 +11,6 @@ jest.mock("../../src/processing/goodreads", () => ({
   queryGoodreadsForBookID: jest.fn(),
 }));
 
-
 describe("Export", () => {
   let app: jest.Mocked<App>;
   let settings: KindleImportPluginSettings;
@@ -68,7 +67,7 @@ describe("Export", () => {
   test("creates a markdown file with book highlights", async () => {
     app.vault.getAbstractFileByPath.mockReturnValue(null);
     await exportToMarkdown(notebook, app, settings);
-    
+
     const expectedPath = "exports/Sample Book.md";
     expect(app.vault.create).toHaveBeenCalledWith(expectedPath, expect.any(String));
   });
@@ -80,13 +79,15 @@ describe("Export", () => {
 
     const mockQueryGoodreadsForBookID = jest.mocked(queryGoodreadsForBookID);
     mockQueryGoodreadsForBookID.mockResolvedValue(goodreadsBookId);
-  
+
     app.vault.getAbstractFileByPath.mockReturnValue(null);
 
     await exportToMarkdown(notebook, app, settings);
-    
+
     const expectedPath = "exports/Sample Book.md";
-    expect(app.vault.create).toHaveBeenCalledWith(expectedPath, expect.stringContaining(`https://www.goodreads.com/book/show/${goodreadsBookId}`));
+    expect(app.vault.create).toHaveBeenCalledWith(
+      expectedPath,
+      expect.stringContaining(`https://www.goodreads.com/book/show/${goodreadsBookId}`),
+    );
   });
-  
 });
