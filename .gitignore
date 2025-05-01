@@ -18,5 +18,8 @@ main.js
 # obsidian
 data.json
 
+# Testing
+coverage
+
 # Exclude macOS Finder (System Explorer) View States
 .DS_Store

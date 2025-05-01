@@ -32,6 +32,11 @@ jobs:
         run: npm run lint:check
       - name: Test
         run: npm run test
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage/
       - name: Archive Verified Build
         uses: actions/upload-artifact@v4
         with:
