@@ -1,5 +1,5 @@
 repos:
   - repo: https://github.com/rhysd/actionlint
-    rev: v1.6.26  # use the latest tag from: https://github.com/rhysd/actionlint/releases
+    rev: v1.7.7 # use the latest tag from: https://github.com/rhysd/actionlint/releases
     hooks:
       - id: actionlint
