@@ -5,7 +5,6 @@ jest.mock("obsidian", () => ({
   requestUrl: jest.fn(),
 }));
 
-
 describe("Goodreads", () => {
   it("should return the book ID when a valid response is received", async () => {
     const mockResponse = {
