@@ -5,7 +5,6 @@ import { KindleImportPluginSettings } from "src/settings/pluginSettings";
 
 const FILE_PICKER_TRIGGER_DELAY_MS = 10;
 
-
 export class FileUploadModal extends Modal {
   settings: KindleImportPluginSettings;
 
