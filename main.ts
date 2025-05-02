@@ -1,6 +1,7 @@
 import { App, Plugin, PluginSettingTab, Setting } from "obsidian";
 
 import { DefaultSettings, KindleImportPluginSettings } from "src/settings/pluginSettings";
+import { FileUploadModal } from "src/components/fileUploadModal";
 import { KindleSelectionModal } from "src/components/kindleSelectionModal";
 
 export default class KindleImportPlugin extends Plugin {
@@ -12,9 +13,17 @@ export default class KindleImportPlugin extends Plugin {
     // This adds a simple command that can be triggered anywhere
     this.addCommand({
       id: "kindle-import",
-      name: "Import Kindle Notebook",
+      name: "Import Kindle Notebook from Vault",
       callback: () => {
         new KindleSelectionModal(this.app, this.settings).open();
+      },
+    });
+
+    this.addCommand({
+      id: "kindle-import-from-file-picker",
+      name: "Import Kindle Notebook with File Picker",
+      callback: () => {
+        new FileUploadModal(this.app, this.settings).open();
       },
     });
 
