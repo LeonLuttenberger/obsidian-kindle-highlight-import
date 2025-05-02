@@ -3,6 +3,9 @@ import { exportToMarkdown } from "src/processing/export";
 import { kindleHTMLParser } from "src/processing/parser";
 import { KindleImportPluginSettings } from "src/settings/pluginSettings";
 
+const FILE_PICKER_TRIGGER_DELAY_MS = 10;
+
+
 export class FileUploadModal extends Modal {
   settings: KindleImportPluginSettings;
 
@@ -15,7 +18,7 @@ export class FileUploadModal extends Modal {
   onOpen() {
     const { contentEl } = this;
     contentEl.innerHTML = `
-      <input type="file" id="fileInput" accept=".html" />
+      <input type="file" id="fileInput" accept=".html" multiple=false />
     `;
 
     const input = contentEl.querySelector("#fileInput") as HTMLInputElement;
@@ -32,7 +35,7 @@ export class FileUploadModal extends Modal {
     });
 
     // Auto-focus and open file picker on desktop/mobile
-    setTimeout(() => input.click(), 10); // Triggers file picker immediately
+    setTimeout(() => input.click(), FILE_PICKER_TRIGGER_DELAY_MS); // Triggers file picker immediately
   }
 
   onClose() {

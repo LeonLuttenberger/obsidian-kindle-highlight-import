@@ -20,7 +20,7 @@ This project is a plugin for [Obsidian](https://obsidian.md/) that allows users 
 
 1. Open Obsidian and navigate to the **Settings** menu.
 2. Go to the **Community Plugins** section and enable the "Kindle Highlight Import" plugin.
-3. Use the plugin's interface to import your Kindle highlights. You can configure settings such as the organization format and sync preferences.
+3. Use the plugin's interface to import your Kindle highlights.
 
 ## Contributing
 
