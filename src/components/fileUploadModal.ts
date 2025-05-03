@@ -33,6 +33,10 @@ export class FileUploadModal extends Modal {
       this.close();
     });
 
+    input.addEventListener("cancel", (_event) => {
+      this.close();
+    });
+
     // Auto-focus and open file picker on desktop/mobile
     setTimeout(() => input.click(), FILE_PICKER_TRIGGER_DELAY_MS); // Triggers file picker immediately
   }
