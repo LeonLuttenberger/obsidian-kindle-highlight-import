@@ -1,11 +1,11 @@
 {
-  "id": "kindle-highlights-import",
-  "name": "Kindle Highlights Import",
-  "version": "1.1.0",
-  "minAppVersion": "0.15.0",
-  "description": "Converts the Kindle highlight export HTML into an Obsidian note.",
-  "author": "Obsidian",
-  "authorUrl": "https://obsidian.md",
-  "fundingUrl": "https://obsidian.md/pricing",
-  "isDesktopOnly": false
+	"id": "kindle-highlights-import",
+	"name": "Kindle Highlights Import",
+	"version": "1.1.1",
+	"minAppVersion": "0.15.0",
+	"description": "Converts the Kindle highlight export HTML into an Obsidian note.",
+	"author": "Obsidian",
+	"authorUrl": "https://obsidian.md",
+	"fundingUrl": "https://obsidian.md/pricing",
+	"isDesktopOnly": false
 }
