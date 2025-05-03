@@ -15,16 +15,15 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
+          python-version: "3.x"
 
       - name: Cache pre-commit hooks
         uses: actions/cache@v4
         with:
-            path: ~/.cache/pre-commit
-            key: ${{ runner.os }}-pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
-            restore-keys: |
-                ${{ runner.os }}-pre-commit-
-
+          path: ~/.cache/pre-commit
+          key: ${{ runner.os }}-pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pre-commit-
 
       - name: Install pre-commit
         run: pip install pre-commit
