@@ -16,12 +16,19 @@ export class FileUploadModal extends Modal {
 
   onOpen() {
     const { contentEl } = this;
+
+    // Hide the entire modal container so that only the file picker shows up
+    this.modalEl.style.display = "none";
+
     contentEl.innerHTML = `
-      <input type="file" id="fileInput" accept=".html" multiple=false />
+      <input type="file" id="fileInput" />
     `;
 
     const input = contentEl.querySelector("#fileInput") as HTMLInputElement;
+    input.accept = ".html";
+    input.multiple = false;
 
+    // Parse file when the user selects it
     input.addEventListener("change", async () => {
       const file = input.files?.[0];
       if (file) {
@@ -33,6 +40,7 @@ export class FileUploadModal extends Modal {
       this.close();
     });
 
+    // Close the modal when the user cancels the file selection
     input.addEventListener("cancel", (_event) => {
       this.close();
     });
