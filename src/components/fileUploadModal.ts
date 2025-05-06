@@ -3,6 +3,8 @@ import { exportToMarkdown } from "src/processing/export";
 import { kindleHTMLParser } from "src/processing/parser";
 import { KindleImportPluginSettings } from "src/settings/pluginSettings";
 
+import "styles.css";
+
 const FILE_PICKER_TRIGGER_DELAY_MS = 10;
 
 export class FileUploadModal extends Modal {
@@ -18,7 +20,7 @@ export class FileUploadModal extends Modal {
     const { contentEl } = this;
 
     // Hide the entire modal container so that only the file picker shows up
-    this.modalEl.style.display = "none";
+    this.modalEl.classList.add("hidden-modal");
 
     contentEl.innerHTML = `
       <input type="file" id="fileInput" />
