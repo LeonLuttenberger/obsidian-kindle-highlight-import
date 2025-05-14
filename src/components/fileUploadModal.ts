@@ -3,8 +3,6 @@ import { exportToMarkdown } from "src/processing/export";
 import { kindleHTMLParser } from "src/processing/parser";
 import { KindleImportPluginSettings } from "src/settings/pluginSettings";
 
-import "styles.css";
-
 const FILE_PICKER_TRIGGER_DELAY_MS = 10;
 
 export class FileUploadModal extends Modal {
