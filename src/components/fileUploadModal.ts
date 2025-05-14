@@ -18,19 +18,17 @@ export class FileUploadModal extends Modal {
     const { contentEl } = this;
 
     // Hide the entire modal container so that only the file picker shows up
-    this.modalEl.style.display = "none";
+    this.modalEl.classList.add("hidden-modal");
 
-    contentEl.innerHTML = `
-      <input type="file" id="fileInput" />
-    `;
-
-    const input = contentEl.querySelector("#fileInput") as HTMLInputElement;
-    input.accept = ".html";
-    input.multiple = false;
+    // Create and configure the file input element safely
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = ".html";
+    fileInput.multiple = false;
 
     // Parse file when the user selects it
-    input.addEventListener("change", async () => {
-      const file = input.files?.[0];
+    fileInput.addEventListener("change", async () => {
+      const file = fileInput.files?.[0];
       if (file) {
         const content = await file.text();
         const notebook = kindleHTMLParser(content);
@@ -40,13 +38,15 @@ export class FileUploadModal extends Modal {
       this.close();
     });
 
+    contentEl.appendChild(fileInput);
+
     // Close the modal when the user cancels the file selection
-    input.addEventListener("cancel", (_event) => {
+    fileInput.addEventListener("cancel", (_event) => {
       this.close();
     });
 
     // Auto-focus and open file picker on desktop/mobile
-    setTimeout(() => input.click(), FILE_PICKER_TRIGGER_DELAY_MS); // Triggers file picker immediately
+    setTimeout(() => fileInput.click(), FILE_PICKER_TRIGGER_DELAY_MS); // Triggers file picker immediately
   }
 
   onClose() {
