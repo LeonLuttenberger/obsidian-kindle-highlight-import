@@ -1,4 +1,4 @@
-import { App, Notice } from "obsidian";
+import { App, Notice, normalizePath } from "obsidian";
 import { BookHighlights, Highlight, ChapterHighlights } from "src/processing/parser";
 import { KindleImportPluginSettings } from "src/settings/pluginSettings";
 import { queryGoodreadsForBookID } from "src/processing/goodreads";
@@ -87,9 +87,9 @@ export async function exportToMarkdown(
 
   let md_file_path: string;
   if (settings.exportLocation) {
-    md_file_path = `${settings.exportLocation}/${md_file_name}.md`;
+    md_file_path = normalizePath(`${settings.exportLocation}/${md_file_name}.md`);
   } else {
-    md_file_path = `${md_file_name}.md`;
+    md_file_path = normalizePath(`${md_file_name}.md`);
   }
 
   if (app.vault.getAbstractFileByPath(md_file_path)) {

@@ -1,4 +1,5 @@
 import { App, Plugin, PluginSettingTab, Setting } from "obsidian";
+import FolderSuggest from "src/components/folderSuggest";
 
 import { DefaultSettings, KindleImportPluginSettings } from "src/settings/pluginSettings";
 import { FileUploadModal } from "src/components/fileUploadModal";
@@ -11,16 +12,16 @@ export default class KindleImportPlugin extends Plugin {
     await this.loadSettings();
 
     this.addCommand({
-      id: "kindle-import-from-file-picker",
-      name: "Import Kindle Notebook with File Picker",
+      id: "import-from-file-picker",
+      name: "Import Kindle notebook with file picker",
       callback: () => {
         new FileUploadModal(this.app, this.settings).open();
       },
     });
 
     this.addCommand({
-      id: "kindle-import",
-      name: "Import Kindle Notebook from Vault",
+      id: "import-from-vault",
+      name: "Import Kindle notebook from vault",
       callback: () => {
         new KindleSelectionModal(this.app, this.settings).open();
       },
@@ -29,8 +30,6 @@ export default class KindleImportPlugin extends Plugin {
     // This adds a settings tab so the user can configure various aspects of the plugin
     this.addSettingTab(new KindleImportPluginSettingTab(this.app, this));
 
-    // When registering intervals, this function will automatically clear the interval when the plugin is disabled.
-    this.registerInterval(window.setInterval(() => console.log("setInterval"), 5 * 60 * 1000));
   }
 
   onunload() {}
@@ -58,52 +57,57 @@ class KindleImportPluginSettingTab extends PluginSettingTab {
     containerEl.empty();
 
     new Setting(containerEl)
-      .setName("Notebook Location")
+      .setName("Notebook location")
       .setDesc("Path to notebook folder")
-      .addText((text) =>
+      .addText((text) => {
         text
           .setPlaceholder("Enter the path")
           .setValue(this.plugin.settings.notebooksLocation)
           .onChange(async (value) => {
             this.plugin.settings.notebooksLocation = value;
             await this.plugin.saveSettings();
-          }),
-      );
+          });
+        new FolderSuggest(this.app, text.inputEl);
+      });
 
     new Setting(containerEl)
-      .setName("Book Notes Location")
+      .setName("Book notes location")
       .setDesc("Path to book notes folder")
-      .addText((text) =>
+      .addText((text) => {
         text
           .setPlaceholder("Enter the path")
           .setValue(this.plugin.settings.exportLocation)
           .onChange(async (value) => {
             this.plugin.settings.exportLocation = value;
             await this.plugin.saveSettings();
-          }),
-      );
+          });
+        new FolderSuggest(this.app, text.inputEl);
+      });
 
     new Setting(containerEl)
-      .setName("Should the export query Goodreads?")
+      .setName("Query Goodreads")
       .setDesc("If checked, the plugin will query Goodreads to generate a link to the book page")
       .addToggle((toggle) =>
         toggle.setValue(this.plugin.settings.queryGoodreads).onChange(async (value) => {
           this.plugin.settings.queryGoodreads = value;
           await this.plugin.saveSettings();
+          this.display();
         }),
       );
 
-    new Setting(containerEl)
-      .setName("Goodreads User ID")
-      .setDesc("ID of your Goodreads user")
-      .addText((text) =>
-        text
-          .setPlaceholder("Enter the user ID")
-          .setValue(this.plugin.settings.goodreadsUserID ?? "")
-          .onChange(async (value) => {
-            this.plugin.settings.goodreadsUserID = value;
-            await this.plugin.saveSettings();
-          }),
-      );
+    if (this.plugin.settings.queryGoodreads) {
+      new Setting(containerEl)
+        .setName("Goodreads user ID")
+        .setDesc("ID of your Goodreads user")
+        .addText((text) =>
+          text
+            .setPlaceholder("Enter the user ID")
+            .setValue(this.plugin.settings.goodreadsUserID ?? "")
+            .onChange(async (value) => {
+              this.plugin.settings.goodreadsUserID = value;
+              await this.plugin.saveSettings();
+            }),
+        );
+    }
   }
 }
