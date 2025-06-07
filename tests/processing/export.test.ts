@@ -5,7 +5,11 @@ import { BookHighlights } from "../../src/processing/parser";
 import { KindleImportPluginSettings } from "../../src/settings/pluginSettings";
 import { jest } from "@jest/globals";
 
-jest.mock("obsidian");
+jest.mock("obsidian", () => ({
+  normalizePath: (path: string) => path,
+  App: class {},
+  Notice: class {},
+}));
 
 jest.mock("../../src/processing/goodreads", () => ({
   queryGoodreadsForBookID: jest.fn(),

@@ -1,4 +1,4 @@
-# Obsidian Kindle Highlight Import
+# Kindle Highlight Import
 
 This project is a plugin for [Obsidian](https://obsidian.md/) that allows users to import Kindle highlights into their Obsidian vault. It helps organize and manage your Kindle highlights seamlessly within your Obsidian notes.
 

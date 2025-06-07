@@ -18,7 +18,7 @@ export class FileUploadModal extends Modal {
     const { contentEl } = this;
 
     // Hide the entire modal container so that only the file picker shows up
-    this.modalEl.classList.add("hidden-modal");
+    this.modalEl.classList.add("kindle-import-hidden-modal");
 
     // Create and configure the file input element safely
     const fileInput = document.createElement("input");
