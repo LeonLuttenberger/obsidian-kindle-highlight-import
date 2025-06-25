@@ -77,7 +77,7 @@ class KindleImportPluginSettingTab extends PluginSettingTab {
           .setPlaceholder("Enter the path")
           .setValue(this.plugin.settings.exportLocation)
           .onChange(async (value) => {
-            this.plugin.settings.exportLocation = value;
+            this.plugin.settings.exportLocation = normalizePath(value);
             await this.plugin.saveSettings();
           });
         new FolderSuggest(this.app, text.inputEl);
@@ -88,7 +88,7 @@ class KindleImportPluginSettingTab extends PluginSettingTab {
       .setDesc("If checked, the plugin will query Goodreads to generate a link to the book page")
       .addToggle((toggle) =>
         toggle.setValue(this.plugin.settings.queryGoodreads).onChange(async (value) => {
-          this.plugin.settings.queryGoodreads = normalizePath(value);
+          this.plugin.settings.queryGoodreads = value;
           await this.plugin.saveSettings();
           this.display();
         }),
