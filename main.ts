@@ -1,4 +1,4 @@
-import { App, Plugin, PluginSettingTab, Setting } from "obsidian";
+import { App, Plugin, PluginSettingTab, Setting, normalizePath } from "obsidian";
 import FolderSuggest from "src/components/folderSuggest";
 
 import { DefaultSettings, KindleImportPluginSettings } from "src/settings/pluginSettings";
@@ -63,7 +63,7 @@ class KindleImportPluginSettingTab extends PluginSettingTab {
           .setPlaceholder("Enter the path")
           .setValue(this.plugin.settings.notebooksLocation)
           .onChange(async (value) => {
-            this.plugin.settings.notebooksLocation = value;
+            this.plugin.settings.notebooksLocation = normalizePath(value);
             await this.plugin.saveSettings();
           });
         new FolderSuggest(this.app, text.inputEl);
@@ -88,7 +88,7 @@ class KindleImportPluginSettingTab extends PluginSettingTab {
       .setDesc("If checked, the plugin will query Goodreads to generate a link to the book page")
       .addToggle((toggle) =>
         toggle.setValue(this.plugin.settings.queryGoodreads).onChange(async (value) => {
-          this.plugin.settings.queryGoodreads = value;
+          this.plugin.settings.queryGoodreads = normalizePath(value);
           await this.plugin.saveSettings();
           this.display();
         }),
