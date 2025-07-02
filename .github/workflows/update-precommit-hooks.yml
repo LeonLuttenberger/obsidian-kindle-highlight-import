@@ -16,4 +16,4 @@ jobs:
           fetch-depth: 0
 
       - name: Run Auto Update Pre-Commit Action
-        uses: LeonLuttenberger/gh-auto-update-precommit@v1.0.0
+        uses: LeonLuttenberger/gh-auto-update-precommit@v1.0.1
