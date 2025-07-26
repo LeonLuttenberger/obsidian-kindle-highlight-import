@@ -1,5 +1,5 @@
-import { queryGoodreadsForBookID } from "../../src/processing/goodreads";
 import { requestUrl } from "obsidian";
+import { queryGoodreadsForBookID } from "../../src/processing/goodreads";
 
 jest.mock("obsidian", () => ({
   requestUrl: jest.fn(),

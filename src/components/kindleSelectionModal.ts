@@ -1,7 +1,7 @@
-import { App, SuggestModal, TFile } from "obsidian";
+import { type App, SuggestModal, type TFile } from "obsidian";
 import { exportToMarkdown } from "src/processing/export";
 import { kindleHTMLParser } from "src/processing/parser";
-import { KindleImportPluginSettings } from "src/settings/pluginSettings";
+import type { KindleImportPluginSettings } from "src/settings/pluginSettings";
 
 export class KindleSelectionModal extends SuggestModal<TFile> {
   settings: KindleImportPluginSettings;
@@ -27,7 +27,7 @@ export class KindleSelectionModal extends SuggestModal<TFile> {
   }
 
   // Perform action on the selected suggestion.
-  onChooseSuggestion(file: TFile, evt: MouseEvent | KeyboardEvent): void {
+  onChooseSuggestion(file: TFile, _evt: MouseEvent | KeyboardEvent): void {
     this.app.vault.cachedRead(file).then((content) => {
       const notebook = kindleHTMLParser(content);
       exportToMarkdown(notebook, this.app, this.settings);

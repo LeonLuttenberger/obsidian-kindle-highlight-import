@@ -1,7 +1,7 @@
-import { App, Modal } from "obsidian";
+import { type App, Modal } from "obsidian";
 import { exportToMarkdown } from "src/processing/export";
 import { kindleHTMLParser } from "src/processing/parser";
-import { KindleImportPluginSettings } from "src/settings/pluginSettings";
+import type { KindleImportPluginSettings } from "src/settings/pluginSettings";
 
 const FILE_PICKER_TRIGGER_DELAY_MS = 10;
 

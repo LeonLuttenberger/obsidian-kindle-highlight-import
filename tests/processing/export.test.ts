@@ -1,9 +1,9 @@
-import { App } from "obsidian";
+import { jest } from "@jest/globals";
+import type { App } from "obsidian";
 import { exportToMarkdown } from "../../src/processing/export";
 import { queryGoodreadsForBookID } from "../../src/processing/goodreads";
-import { BookHighlights } from "../../src/processing/parser";
-import { KindleImportPluginSettings } from "../../src/settings/pluginSettings";
-import { jest } from "@jest/globals";
+import type { BookHighlights } from "../../src/processing/parser";
+import type { KindleImportPluginSettings } from "../../src/settings/pluginSettings";
 
 jest.mock("obsidian", () => ({
   normalizePath: (path: string) => path,
