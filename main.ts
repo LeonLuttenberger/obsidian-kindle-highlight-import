@@ -1,9 +1,8 @@
-import { App, Plugin, PluginSettingTab, Setting, normalizePath } from "obsidian";
-import FolderSuggest from "src/components/folderSuggest";
-
-import { DefaultSettings, KindleImportPluginSettings } from "src/settings/pluginSettings";
+import { type App, normalizePath, Plugin, PluginSettingTab, Setting } from "obsidian";
 import { FileUploadModal } from "src/components/fileUploadModal";
+import FolderSuggest from "src/components/folderSuggest";
 import { KindleSelectionModal } from "src/components/kindleSelectionModal";
+import { DefaultSettings, type KindleImportPluginSettings } from "src/settings/pluginSettings";
 
 export default class KindleImportPlugin extends Plugin {
   settings: KindleImportPluginSettings;

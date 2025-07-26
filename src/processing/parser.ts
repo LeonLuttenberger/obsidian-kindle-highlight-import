@@ -18,7 +18,7 @@ export interface BookHighlights {
 function getElementValue(htmlDoc: Document, className: string): string {
   const elements = htmlDoc.getElementsByClassName(className);
 
-  if (elements.length == 0) {
+  if (elements.length === 0) {
     throw Error(`Element ${className} not present.`);
   }
 
@@ -43,8 +43,8 @@ function processAuthorName(text: string): string {
   if (text.includes(",")) {
     const nameComponents = text.split(",");
 
-    if (nameComponents.length == 2) {
-      return nameComponents[1].trim() + " " + nameComponents[0].trim();
+    if (nameComponents.length === 2) {
+      return `${nameComponents[1].trim()} ${nameComponents[0].trim()}`;
     }
   }
 
@@ -74,7 +74,7 @@ export function kindleHTMLParser(text: string): BookHighlights {
   Array.from(htmlDoc.querySelectorAll(".sectionHeading,.noteText")).forEach((element) => {
     const className = element.className;
 
-    if (className == "sectionHeading") {
+    if (className === "sectionHeading") {
       const chapterName = element.textContent?.trim();
       if (!chapterName) {
         throw Error("Chapter name is empty.");
@@ -93,7 +93,7 @@ export function kindleHTMLParser(text: string): BookHighlights {
     const noteHeadingElement = element.previousElementSibling;
     const noteHeadingTextContent = noteHeadingElement?.textContent?.trim();
 
-    if (!noteHeadingTextContent || noteHeadingElement?.className != "noteHeading") {
+    if (!noteHeadingTextContent || noteHeadingElement?.className !== "noteHeading") {
       throw Error("Note heading is empty or not found.");
     }
 

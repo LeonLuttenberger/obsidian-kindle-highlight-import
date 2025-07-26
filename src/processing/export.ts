@@ -1,7 +1,7 @@
-import { App, Notice, normalizePath } from "obsidian";
-import { BookHighlights, Highlight, ChapterHighlights } from "src/processing/parser";
-import { KindleImportPluginSettings } from "src/settings/pluginSettings";
+import { type App, Notice, normalizePath } from "obsidian";
 import { queryGoodreadsForBookID } from "src/processing/goodreads";
+import type { BookHighlights, ChapterHighlights, Highlight } from "src/processing/parser";
+import type { KindleImportPluginSettings } from "src/settings/pluginSettings";
 
 function getMdFileTitle(bookTitle: string): string {
   if (bookTitle.includes(":")) {

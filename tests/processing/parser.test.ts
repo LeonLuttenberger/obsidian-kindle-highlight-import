@@ -1,5 +1,4 @@
-import { kindleHTMLParser } from "../../src/processing/parser";
-import { BookHighlights } from "../../src/processing/parser";
+import { type BookHighlights, kindleHTMLParser } from "../../src/processing/parser";
 
 const htmlString = `
 <html>

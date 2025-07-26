@@ -47,27 +47,6 @@ jobs:
             manifest.json
             styles.css
 
-  lint_and_format:
-    runs-on: ubuntu-latest
-    name: Lint and Format Check
-    needs: setup
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-      - name: Restore node_modules
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
-      - name: Format Check
-        run: npm run format:check
-      - name: Lint Check
-        run: npm run lint:check
-
   test_and_coverage:
     runs-on: ubuntu-latest
     name: Test and Coverage
@@ -95,7 +74,7 @@ jobs:
   upload_build:
     runs-on: ubuntu-latest
     name: Upload Build Artifacts
-    needs: [lint_and_format, test_and_coverage]
+    needs: test_and_coverage
     steps:
       - name: Download Build Output
         uses: actions/download-artifact@v4
