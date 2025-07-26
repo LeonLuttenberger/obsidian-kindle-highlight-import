@@ -16,14 +16,15 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@biomejs/biome": "^2.1.2",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.0.10",
     "builtin-modules": "5.0.0",
     "esbuild": "0.25.5",
     "jest": "^30.0.3",
     "jest-environment-jsdom": "^30.0.2",
+    "jest-junit": "^16.0.0",
     "obsidian": "latest",
-    "@biomejs/biome": "^2.1.2",
     "ts-jest": "^29.4.0",
     "tslib": "2.8.1",
     "typescript": "5.8.3"
