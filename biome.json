@@ -18,9 +18,7 @@
     "formatter": {
       "quoteStyle": "double",
       "trailingCommas": "all",
-      "semicolons": "always",
-      "quoteProperties": "asNeeded",
-      "arrowParentheses": "always"
+      "semicolons": "always"
     }
   }
 }
