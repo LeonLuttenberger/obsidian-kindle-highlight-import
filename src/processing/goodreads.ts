@@ -6,7 +6,7 @@ function getBookID(text: string): string | undefined {
   if (matches) {
     return matches[1];
   }
-  console.log(`"No book ID found in text: ${text}"`);
+  console.log(`No book ID found in text: ${text}`);
   return undefined;
 }
 
