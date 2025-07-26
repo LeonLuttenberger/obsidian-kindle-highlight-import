@@ -15,7 +15,6 @@ jobs:
       - name: Install the latest version of uv
         uses: astral-sh/setup-uv@v6
         with:
-          enable-cache: true
           activate-environment: true
 
       - name: Cache pre-commit hooks
