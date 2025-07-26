@@ -1,4 +1,4 @@
-name: Build and test project
+name: Build and Test Project
 
 on:
   push:
@@ -15,11 +15,9 @@ env:
   NODE_VERSION: "18"
 
 jobs:
-  setup:
+  build_and_test:
     runs-on: ubuntu-latest
-    name: Setup & Install
-    outputs:
-      cache-hit: ${{ steps.cache-node-modules.outputs.cache-hit }}
+    name: Build, Test, and Coverage
     steps:
       - uses: actions/checkout@v4
         with:
@@ -28,7 +26,6 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Cache node_modules
-        id: cache-node-modules
         uses: actions/cache@v4
         with:
           path: node_modules
@@ -37,6 +34,13 @@ jobs:
         run: npm install
       - name: Build Project
         run: npm run build
+      - name: Run Tests
+        run: npm run test -- --coverage
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
       - name: Save Build Output
         uses: actions/upload-artifact@v4
         with:
@@ -47,34 +51,10 @@ jobs:
             manifest.json
             styles.css
 
-  test_and_coverage:
-    runs-on: ubuntu-latest
-    name: Test and Coverage
-    needs: setup
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-      - name: Restore node_modules
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
-      - name: Run Tests
-        run: npm run test -- --coverage
-      - name: Upload Coverage to Codecov
-        uses: codecov/codecov-action@v5
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage/lcov.info
-
   upload_build:
     runs-on: ubuntu-latest
     name: Upload Build Artifacts
-    needs: test_and_coverage
+    needs: build_and_test
     steps:
       - name: Download Build Output
         uses: actions/download-artifact@v4
