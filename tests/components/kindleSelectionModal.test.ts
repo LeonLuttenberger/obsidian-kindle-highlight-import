@@ -12,7 +12,7 @@ describe("KindleSelectionModal", () => {
 
   beforeEach(() => {
     jest.resetAllMocks();
-    jest.mocked(kindleHTMLParser).mockReturnValue(parsed as any);
+    jest.mocked(kindleHTMLParser).mockReturnValue(parsed);
   });
 
   test("reads file and exports", async () => {

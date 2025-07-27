@@ -100,7 +100,6 @@ describe("Export", () => {
     app.vault.getAbstractFileByPath.mockReturnValue({} as unknown as TAbstractFile);
     await exportToMarkdown(notebook, app, settings);
 
-    const expectedPath = "Sample Book.md";
     expect(app.vault.create).not.toHaveBeenCalled();
   });
 

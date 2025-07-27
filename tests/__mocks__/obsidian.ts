@@ -11,10 +11,10 @@ export class Vault {
 }
 
 export class Modal {
-  app: any;
+  app: unknown;
   contentEl: HTMLElement;
   modalEl: HTMLElement;
-  constructor(app: any) {
+  constructor(app: unknown) {
     this.app = app;
     this.contentEl = document.createElement("div");
     this.modalEl = document.createElement("div");
@@ -24,9 +24,6 @@ export class Modal {
 }
 
 export class SuggestModal<T> extends Modal {
-  constructor(app: any) {
-    super(app);
-  }
   getSuggestions(_query: string): T[] {
     return [] as T[];
   }
@@ -34,10 +31,10 @@ export class SuggestModal<T> extends Modal {
   onChooseSuggestion(_value: T, _evt: MouseEvent | KeyboardEvent) {}
 }
 
-export class AbstractInputSuggest<T> {
-  app: any;
+export class AbstractInputSuggest<_T> {
+  app: unknown;
   inputEl: HTMLInputElement;
-  constructor(app: any, inputEl: HTMLInputElement) {
+  constructor(app: unknown, inputEl: HTMLInputElement) {
     this.app = app;
     this.inputEl = inputEl;
   }

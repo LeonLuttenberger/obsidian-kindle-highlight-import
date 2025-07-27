@@ -12,7 +12,7 @@ describe("FileUploadModal", () => {
 
   beforeEach(() => {
     jest.resetAllMocks();
-    jest.mocked(kindleHTMLParser).mockReturnValue(parsed as any);
+    jest.mocked(kindleHTMLParser).mockReturnValue(parsed);
   });
 
   test("parses selected file and exports", async () => {
