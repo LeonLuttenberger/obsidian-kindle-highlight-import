@@ -9,7 +9,8 @@ module.exports = {
   moduleNameMapper: {
     "^src/(.*)$": "<rootDir>/src/$1",
   },
+  reporters: ["default", "jest-junit"],
   collectCoverage: true,
   coverageDirectory: "coverage",
-  coverageReporters: ["text", "lcov"],
+  coverageReporters: ["text", "cobertura"],
 };
