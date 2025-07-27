@@ -82,4 +82,20 @@ describe("Parser", () => {
     expect(chapterHighlights[1].highlights[1].type).toBe("note");
     expect(chapterHighlights[1].highlights[1].pageNumber).toBe(28);
   });
+
+  test("throws when required elements missing", () => {
+    const badHtml = `<html><body><div class="authors">Author</div></body></html>`;
+    expect(() => kindleHTMLParser(badHtml)).toThrow("bookTitle");
+  });
+
+  test("throws when note heading missing", () => {
+    const badHtml = `
+      <html><body>
+        <div class="bookTitle">Title</div>
+        <div class="authors">Author</div>
+        <div class="sectionHeading">Chapter</div>
+        <div class="noteText">Text</div>
+      </body></html>`;
+    expect(() => kindleHTMLParser(badHtml)).toThrow("Note heading");
+  });
 });

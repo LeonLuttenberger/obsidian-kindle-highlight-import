@@ -53,4 +53,20 @@ describe("Goodreads", () => {
     const bookID = await queryGoodreadsForBookID("Book Without Href", ["Author Name"]);
     expect(bookID).toBeUndefined();
   });
+
+  it("should return undefined when href cannot be parsed", async () => {
+    const mockResponse = {
+      text: `
+        <html>
+          <body>
+            <a class="bookTitle" href="/book/invalid">Book Title</a>
+          </body>
+        </html>
+      `,
+    };
+    (requestUrl as jest.Mock).mockResolvedValue(mockResponse);
+
+    const bookID = await queryGoodreadsForBookID("Bad Href", ["Author"]);
+    expect(bookID).toBeUndefined();
+  });
 });

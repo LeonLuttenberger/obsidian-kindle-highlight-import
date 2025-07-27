@@ -94,4 +94,25 @@ describe("Export", () => {
       expect.stringContaining(`https://www.goodreads.com/book/show/${goodreadsBookId}`),
     );
   });
+
+  test("handles existing file", async () => {
+    settings.exportLocation = "";
+    app.vault.getAbstractFileByPath.mockReturnValue({});
+    await exportToMarkdown(notebook, app, settings);
+
+    const expectedPath = "Sample Book.md";
+    expect(app.vault.create).not.toHaveBeenCalled();
+  });
+
+  test("shows notice when Goodreads ID missing", async () => {
+    settings.queryGoodreads = true;
+    const mockQueryGoodreadsForBookID = jest.mocked(queryGoodreadsForBookID);
+    mockQueryGoodreadsForBookID.mockResolvedValue(undefined);
+
+    app.vault.getAbstractFileByPath.mockReturnValue(null);
+
+    await exportToMarkdown(notebook, app, settings);
+
+    expect(app.vault.create).toHaveBeenCalled();
+  });
 });
