@@ -1,5 +1,5 @@
 import { jest } from "@jest/globals";
-import type { App } from "obsidian";
+import type { App, TAbstractFile } from "obsidian";
 import { exportToMarkdown } from "../../src/processing/export";
 import { queryGoodreadsForBookID } from "../../src/processing/goodreads";
 import type { BookHighlights } from "../../src/processing/parser";
@@ -97,7 +97,7 @@ describe("Export", () => {
 
   test("handles existing file", async () => {
     settings.exportLocation = "";
-    app.vault.getAbstractFileByPath.mockReturnValue({});
+    app.vault.getAbstractFileByPath.mockReturnValue({} as unknown as TAbstractFile);
     await exportToMarkdown(notebook, app, settings);
 
     const expectedPath = "Sample Book.md";
