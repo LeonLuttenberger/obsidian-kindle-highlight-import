@@ -1,8 +1,7 @@
+import type { App, TFile } from "obsidian";
 import { KindleSelectionModal } from "../../src/components/kindleSelectionModal";
-import { kindleHTMLParser } from "../../src/processing/parser";
 import { exportToMarkdown } from "../../src/processing/export";
-import type { App } from "obsidian";
-import type { TFile } from "obsidian";
+import { kindleHTMLParser } from "../../src/processing/parser";
 import type { KindleImportPluginSettings } from "../../src/settings/pluginSettings";
 
 jest.mock("../../src/processing/export");
@@ -19,7 +18,7 @@ describe("KindleSelectionModal", () => {
   test("reads file and exports", async () => {
     const fileContent = "abc";
     const vault = {
-      cachedRead: jest.fn().mockResolvedValue(fileContent)
+      cachedRead: jest.fn().mockResolvedValue(fileContent),
     };
     const app = { vault } as unknown as App;
     const settings = { notebooksLocation: "", exportLocation: "", queryGoodreads: false } as KindleImportPluginSettings;

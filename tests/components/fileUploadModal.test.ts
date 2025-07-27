@@ -1,7 +1,7 @@
-import { FileUploadModal } from "../../src/components/fileUploadModal";
-import { kindleHTMLParser } from "../../src/processing/parser";
-import { exportToMarkdown } from "../../src/processing/export";
 import type { App } from "obsidian";
+import { FileUploadModal } from "../../src/components/fileUploadModal";
+import { exportToMarkdown } from "../../src/processing/export";
+import { kindleHTMLParser } from "../../src/processing/parser";
 import type { KindleImportPluginSettings } from "../../src/settings/pluginSettings";
 
 jest.mock("../../src/processing/export");
