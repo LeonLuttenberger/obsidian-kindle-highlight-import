@@ -20,6 +20,7 @@ data.json
 
 # Testing
 coverage
+junit.xml
 
 # Exclude macOS Finder (System Explorer) View States
 .DS_Store
