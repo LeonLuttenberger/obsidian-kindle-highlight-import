@@ -48,26 +48,8 @@ jobs:
       - name: Save Build Output
         uses: actions/upload-artifact@v4
         with:
-          name: dist-temp
-          retention-days: 1 # auto-expire quickly
-          path: |
-            main.js
-            manifest.json
-            styles.css
-
-  upload_build:
-    runs-on: ubuntu-latest
-    name: Upload Build Artifacts
-    needs: build_and_test
-    steps:
-      - name: Download Build Output
-        uses: actions/download-artifact@v4
-        with:
-          name: dist-temp
-      - name: Upload Final Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist-verified
+          name: build-artifact
+          retention-days: 7
           path: |
             main.js
             manifest.json
