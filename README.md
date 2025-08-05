@@ -1,5 +1,9 @@
 # Kindle Highlight Import
 
+[![Build and Test Project](https://github.com/LeonLuttenberger/obsidian-kindle-highlight-import/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/LeonLuttenberger/obsidian-kindle-highlight-import/actions/workflows/build-and-test.yml)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/LeonLuttenberger/obsidian-kindle-highlight-import/main.svg)](https://results.pre-commit.ci/latest/github/LeonLuttenberger/obsidian-kindle-highlight-import/main)
+[![codecov](https://codecov.io/gh/LeonLuttenberger/obsidian-kindle-highlight-import/graph/badge.svg?token=8MYD657APX)](https://codecov.io/gh/LeonLuttenberger/obsidian-kindle-highlight-import)
+
 This project is a plugin for [Obsidian](https://obsidian.md/) that allows users to import Kindle highlights into their Obsidian vault. It helps organize and manage your Kindle highlights seamlessly within your Obsidian notes.
 
 ## Features
