@@ -13,6 +13,14 @@ This project is a plugin for [Obsidian](https://obsidian.md/) that allows users 
 
 ## Installation
 
+### From Obsidian
+
+1. Open Obsidian and go to **Settings → Community plugins → Browse**.
+2. Search for "Kindle Highlight Import" and install it.
+3. Enable the plugin.
+
+### Manual installation
+
 1. Download the latest release from the [Releases](https://github.com/LeonLuttenberger/obsidian-kindle-highlight-import/releases) page.
 2. Extract the downloaded archive.
 3. Copy the extracted folder to your Obsidian plugins folder:
@@ -22,9 +30,19 @@ This project is a plugin for [Obsidian](https://obsidian.md/) that allows users 
 
 ## Usage
 
-1. Open Obsidian and navigate to the **Settings** menu.
-2. Go to the **Community Plugins** section and enable the "Kindle Highlight Import" plugin.
-3. Use the plugin's interface to import your Kindle highlights.
+1. Export your Kindle notebook: open the Kindle app, go into your highlights, choose **Share**, select **None** as the citation style, and email the file to yourself.
+2. In Obsidian, use one of the plugin commands to import the notebook:
+   - **Import Kindle notebook with file picker** to choose the exported file from your device.
+   - **Import Kindle notebook from vault** to select an exported file already stored in your vault.
+
+### Configuration
+
+Adjust the plugin's settings in **Settings → Kindle Highlight Import** to customize its behavior:
+
+- **Notebook location** – path in your vault where Kindle notebook HTML exports are stored. This is used by the *Import Kindle notebook from vault* command.
+- **Book notes location** – folder where generated Markdown notes are saved. If left empty, notes are created at the vault root.
+- **Query Goodreads** – when enabled, the plugin searches Goodreads for the book and adds a link to the page in the exported note.
+- **Goodreads user ID** – optional ID used to link your own Kindle notes on Goodreads; only relevant if Goodreads querying is enabled.
 
 ## Contributing
 
