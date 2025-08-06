@@ -114,4 +114,28 @@ describe("Export", () => {
 
     expect(app.vault.create).toHaveBeenCalled();
   });
+
+  test("handles colon in book title", async () => {
+    notebook.title = "Sample Book: A Tale";
+    app.vault.getAbstractFileByPath.mockReturnValue(null);
+    await exportToMarkdown(notebook, app, settings);
+
+    const expectedPath = "exports/Sample Book.md";
+    expect(app.vault.create).toHaveBeenCalledWith(expectedPath, expect.any(String));
+  });
+
+  test("formats quote without page number", async () => {
+    notebook.chapterHighlights[0].highlights.push({ text: "Highlight 4", type: "quote" });
+    app.vault.getAbstractFileByPath.mockReturnValue(null);
+    await exportToMarkdown(notebook, app, settings);
+
+    const md = app.vault.create.mock.calls[0][1] as string;
+    expect(md).toContain("> [!quote] Quote\nHighlight 4");
+  });
+
+  test("throws for invalid highlight type", async () => {
+    (notebook.chapterHighlights[0].highlights as any).push({ text: "Bad", type: "bad" });
+    app.vault.getAbstractFileByPath.mockReturnValue(null);
+    await expect(exportToMarkdown(notebook, app, settings)).rejects.toThrow("Invalid highlight type");
+  });
 });

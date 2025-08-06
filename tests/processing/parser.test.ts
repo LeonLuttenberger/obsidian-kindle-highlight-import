@@ -98,4 +98,75 @@ describe("Parser", () => {
       </body></html>`;
     expect(() => kindleHTMLParser(badHtml)).toThrow("Note heading");
   });
+
+  test("throws when previous note heading absent", () => {
+    const badHtml = `
+      <html><body>
+        <div class="bookTitle">Title</div>
+        <div class="authors">Author</div>
+        <div class="sectionHeading">Chapter</div>
+        <div><div class="noteText">Text</div></div>
+      </body></html>`;
+    expect(() => kindleHTMLParser(badHtml)).toThrow("Note heading is empty or not found");
+  });
+
+  test("returns undefined page number when not present", () => {
+    const noPageHtml = `
+      <html><body>
+        <div class="bookTitle">Title</div>
+        <div class="authors">Author</div>
+        <div class="sectionHeading">Chapter</div>
+        <div class="noteHeading">Highlight - Location 10</div>
+        <div class="noteText">Quote</div>
+      </body></html>`;
+
+    const parsed = kindleHTMLParser(noPageHtml);
+    expect(parsed.chapterHighlights[0].highlights[0].pageNumber).toBeUndefined();
+  });
+
+  test("throws when book title empty", () => {
+    const badHtml = `
+      <html><body>
+        <div class="bookTitle"></div>
+        <div class="authors">Author</div>
+      </body></html>`;
+    expect(() => kindleHTMLParser(badHtml)).toThrow("is empty");
+  });
+
+  test("throws when chapter name empty", () => {
+    const badHtml = `
+      <html><body>
+        <div class="bookTitle">Title</div>
+        <div class="authors">Author</div>
+        <div class="sectionHeading"></div>
+        <div class="noteHeading">Highlight - Page 1</div>
+        <div class="noteText">Text</div>
+      </body></html>`;
+    expect(() => kindleHTMLParser(badHtml)).toThrow("Chapter name is empty");
+  });
+
+  test("throws when note text empty", () => {
+    const badHtml = `
+      <html><body>
+        <div class="bookTitle">Title</div>
+        <div class="authors">Author</div>
+        <div class="sectionHeading">Chapter</div>
+        <div class="noteHeading">Highlight - Page 1</div>
+        <div class="noteText"></div>
+      </body></html>`;
+    expect(() => kindleHTMLParser(badHtml)).toThrow("Note text is empty");
+  });
+
+  test("keeps author order when name has multiple commas", () => {
+    const html = `
+      <html><body>
+        <div class="bookTitle">Title</div>
+        <div class="authors">Doe, John, Jr.</div>
+        <div class="sectionHeading">Chapter</div>
+        <div class="noteHeading">Highlight - Page 1</div>
+        <div class="noteText">Text</div>
+      </body></html>`;
+    const parsed = kindleHTMLParser(html);
+    expect(parsed.authors).toEqual(["Doe, John, Jr."]);
+  });
 });
