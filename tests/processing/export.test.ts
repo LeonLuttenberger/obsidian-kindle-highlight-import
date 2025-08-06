@@ -134,7 +134,8 @@ describe("Export", () => {
   });
 
   test("throws for invalid highlight type", async () => {
-    (notebook.chapterHighlights[0].highlights as any).push({ text: "Bad", type: "bad" });
+    // @ts-expect-error
+    notebook.chapterHighlights[0].highlights.push({ text: "Bad", type: "bad" });
     app.vault.getAbstractFileByPath.mockReturnValue(null);
     await expect(exportToMarkdown(notebook, app, settings)).rejects.toThrow("Invalid highlight type");
   });
