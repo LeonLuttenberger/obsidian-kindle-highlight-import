@@ -1,7 +1,11 @@
-import { type App, SuggestModal, type TFile } from "obsidian";
+import { type App, Notice, SuggestModal, type TFile } from "obsidian";
 import { exportToMarkdown } from "src/processing/export";
-import { kindleHTMLParser } from "src/processing/parser";
+import type { BookHighlights } from "src/processing/model";
+import { parseKindleHtml } from "src/processing/parser/html-parser";
+import { parseKindlePdf } from "src/processing/parser/pdf-parser";
 import type { KindleImportPluginSettings } from "src/settings/pluginSettings";
+
+const ACCEPTED_EXTENSIONS = ["html", "pdf"];
 
 export class KindleSelectionModal extends SuggestModal<TFile> {
   settings: KindleImportPluginSettings;
@@ -14,11 +18,11 @@ export class KindleSelectionModal extends SuggestModal<TFile> {
 
   // Returns all available suggestions.
   getSuggestions(query: string): TFile[] {
-    const htmlFiles = this.app.vault
+    return this.app.vault
       .getFiles()
-      .filter((file) => file.extension === "html" && file.path.startsWith(this.settings.notebooksLocation));
-
-    return htmlFiles.filter((file) => file.name.toLowerCase().includes(query.toLowerCase()));
+      .filter((file) => ACCEPTED_EXTENSIONS.includes(file.extension))
+      .filter((file) => file.path.startsWith(this.settings.notebooksLocation))
+      .filter((file) => file.name.toLowerCase().includes(query.toLowerCase()));
   }
 
   // Renders each suggestion item.
@@ -28,8 +32,22 @@ export class KindleSelectionModal extends SuggestModal<TFile> {
 
   // Perform action on the selected suggestion.
   onChooseSuggestion(file: TFile, _evt: MouseEvent | KeyboardEvent): void {
-    this.app.vault.cachedRead(file).then((content) => {
-      const notebook = kindleHTMLParser(content);
+    let notebookPromise: Promise<BookHighlights>;
+
+    if (file.extension === "pdf") {
+      notebookPromise = this.app.vault.readBinary(file).then(async (content) => {
+        return await parseKindlePdf(content);
+      });
+    } else if (file.extension === "html") {
+      notebookPromise = this.app.vault.cachedRead(file).then((content) => {
+        return parseKindleHtml(content);
+      });
+    } else {
+      new Notice("Unsupported file type. Please select a PDF or HTML file.");
+      return;
+    }
+
+    notebookPromise.then((notebook) => {
       exportToMarkdown(notebook, this.app, this.settings);
     });
   }
