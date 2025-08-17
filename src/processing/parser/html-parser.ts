@@ -1,5 +1,5 @@
 import type { BookHighlights, ChapterHighlights } from "src/processing/model";
-import { parseAuthors } from "./utils";
+import { parseAuthors } from "./parser-utils";
 
 function getElementValue(htmlDoc: Document, className: string): string {
   const elements = htmlDoc.getElementsByClassName(className);

@@ -1,11 +1,10 @@
 import { type App, Notice, SuggestModal, type TFile } from "obsidian";
+import { ACCEPTED_EXTENSIONS } from "src/components/component-utils";
 import { exportToMarkdown } from "src/processing/export";
 import type { BookHighlights } from "src/processing/model";
 import { parseKindleHtml } from "src/processing/parser/html-parser";
 import { parseKindlePdf } from "src/processing/parser/pdf-parser";
 import type { KindleImportPluginSettings } from "src/settings/pluginSettings";
-
-const ACCEPTED_EXTENSIONS = ["html", "pdf"];
 
 export class KindleSelectionModal extends SuggestModal<TFile> {
   settings: KindleImportPluginSettings;

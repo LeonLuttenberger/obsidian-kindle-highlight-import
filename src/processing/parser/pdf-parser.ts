@@ -1,6 +1,6 @@
 import { loadPdfJs } from "obsidian";
 import type { BookHighlights, Highlight } from "src/processing/model";
-import { parseAuthors } from "src/processing/parser/utils";
+import { parseAuthors } from "src/processing/parser/parser-utils";
 
 async function extractPdfText(buffer: ArrayBuffer): Promise<string[]> {
   const pdfjsLib = await loadPdfJs();

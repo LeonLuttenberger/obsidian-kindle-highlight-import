@@ -1,4 +1,5 @@
 import { type App, Modal } from "obsidian";
+import { ACCEPTED_EXTENSIONS } from "src/components/component-utils";
 import { exportToMarkdown } from "src/processing/export";
 import type { BookHighlights } from "src/processing/model";
 import { parseKindleHtml } from "src/processing/parser/html-parser";
@@ -6,8 +7,6 @@ import { parseKindlePdf } from "src/processing/parser/pdf-parser";
 import type { KindleImportPluginSettings } from "src/settings/pluginSettings";
 
 const FILE_PICKER_TRIGGER_DELAY_MS = 10;
-
-const ACCEPTED_EXTENSIONS = ["html", "pdf"];
 
 export class FileUploadModal extends Modal {
   settings: KindleImportPluginSettings;
