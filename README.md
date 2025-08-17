@@ -31,6 +31,7 @@ This project is a plugin for [Obsidian](https://obsidian.md/) that allows users 
 ## Usage
 
 1. Export your Kindle notebook: open the Kindle app, go into your highlights, choose **Share**, select **None** as the citation style, and email the file to yourself.
+   - Note: PDF exports created directly from a Kindle device are also supported, but they do not include chapter titles. For best results, exporting from the Kindle app on iOS or Android is recommended.
 2. In Obsidian, use one of the plugin commands to import the notebook:
    - **Import Kindle notebook with file picker** to choose the exported file from your device.
    - **Import Kindle notebook from vault** to select an exported file already stored in your vault.

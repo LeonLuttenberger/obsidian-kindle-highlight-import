@@ -2,7 +2,7 @@ import { jest } from "@jest/globals";
 import type { App, TAbstractFile } from "obsidian";
 import { exportToMarkdown } from "../../src/processing/export";
 import { queryGoodreadsForBookID } from "../../src/processing/goodreads";
-import type { BookHighlights } from "../../src/processing/parser";
+import type { BookHighlights } from "../../src/processing/model";
 import type { KindleImportPluginSettings } from "../../src/settings/pluginSettings";
 
 jest.mock("obsidian", () => ({

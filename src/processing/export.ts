@@ -1,6 +1,6 @@
 import { type App, Notice, normalizePath } from "obsidian";
 import { queryGoodreadsForBookID } from "src/processing/goodreads";
-import type { BookHighlights, ChapterHighlights, Highlight } from "src/processing/parser";
+import type { BookHighlights, ChapterHighlights, Highlight } from "src/processing/model";
 import type { KindleImportPluginSettings } from "src/settings/pluginSettings";
 
 function getMdFileTitle(bookTitle: string): string {
@@ -66,8 +66,10 @@ function stringifyBookHighlights(
   lines.push("");
 
   notebook.chapterHighlights.forEach((chapterHighlights: ChapterHighlights) => {
-    lines.push(`### ${chapterHighlights.chapterName}`);
-    lines.push("");
+    if (chapterHighlights.chapterName) {
+      lines.push(`### ${chapterHighlights.chapterName}`);
+      lines.push("");
+    }
 
     chapterHighlights.highlights.forEach((highlight: Highlight) => {
       lines.push(highlightToQuoteString(highlight));

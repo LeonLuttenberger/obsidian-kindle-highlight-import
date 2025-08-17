@@ -1,6 +1,9 @@
 import { type App, Modal } from "obsidian";
+import { ACCEPTED_EXTENSIONS } from "src/components/component-utils";
 import { exportToMarkdown } from "src/processing/export";
-import { kindleHTMLParser } from "src/processing/parser";
+import type { BookHighlights } from "src/processing/model";
+import { parseKindleHtml } from "src/processing/parser/html-parser";
+import { parseKindlePdf } from "src/processing/parser/pdf-parser";
 import type { KindleImportPluginSettings } from "src/settings/pluginSettings";
 
 const FILE_PICKER_TRIGGER_DELAY_MS = 10;
@@ -23,15 +26,23 @@ export class FileUploadModal extends Modal {
     // Create and configure the file input element safely
     const fileInput = document.createElement("input");
     fileInput.type = "file";
-    fileInput.accept = ".html";
+    fileInput.accept = ACCEPTED_EXTENSIONS.map((ext) => `.${ext}`).join(",");
     fileInput.multiple = false;
 
     // Parse file when the user selects it
     fileInput.addEventListener("change", async () => {
       const file = fileInput.files?.[0];
+
       if (file) {
-        const content = await file.text();
-        const notebook = kindleHTMLParser(content);
+        let notebook: BookHighlights;
+
+        if (file.name.endsWith(".pdf")) {
+          const content = await file.arrayBuffer();
+          notebook = await parseKindlePdf(content);
+        } else {
+          const content = await file.text();
+          notebook = parseKindleHtml(content);
+        }
         exportToMarkdown(notebook, this.app, this.settings);
       }
 
