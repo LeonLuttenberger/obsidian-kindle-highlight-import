@@ -2,6 +2,12 @@ import { loadPdfJs } from "obsidian";
 import type { BookHighlights, Highlight } from "src/processing/model";
 import { parseAuthors } from "src/processing/parser/parser-utils";
 
+type PdfTextItem = { str: string };
+
+function isPdfTextItem(x: unknown): x is PdfTextItem {
+  return typeof x === "object" && x !== null && typeof (x as Record<string, unknown>).str === "string";
+}
+
 async function extractPdfText(buffer: ArrayBuffer): Promise<string[]> {
   const pdfjsLib = await loadPdfJs();
   const pdf = await pdfjsLib.getDocument(buffer).promise;
@@ -12,7 +18,9 @@ async function extractPdfText(buffer: ArrayBuffer): Promise<string[]> {
     const page = await pdf.getPage(i);
     const textContent = await page.getTextContent();
 
-    textItems.push(...textContent.items.map((item: any) => item.str));
+    const items: PdfTextItem[] = textContent.items.filter(isPdfTextItem);
+
+    textItems.push(...items.filter(isPdfTextItem).map((it) => it.str));
   }
 
   return textItems.map((s) => s.trim());
