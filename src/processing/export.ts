@@ -41,6 +41,7 @@ function stringifyBookHighlights(
   lines.push("---");
   lines.push("tags:");
   lines.push("  - books");
+  lines.push(`title: ${notebook.title}`);
   lines.push(`author: ${notebook.authors.join("; ")}`);
   lines.push("---");
 
