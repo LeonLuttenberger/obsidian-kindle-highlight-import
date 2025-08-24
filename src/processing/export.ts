@@ -41,7 +41,11 @@ function stringifyBookHighlights(
   lines.push("---");
   lines.push("tags:");
   lines.push("  - books");
-  lines.push(`author: ${notebook.authors.join("; ")}`);
+  lines.push(`title: ${notebook.title}`);
+  lines.push("author:");
+  notebook.authors.forEach((author) => {
+    lines.push(`  - ${author}`);
+  });
   lines.push("---");
 
   // markdown contents

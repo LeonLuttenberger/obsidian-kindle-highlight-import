@@ -139,4 +139,17 @@ describe("Export", () => {
     app.vault.getAbstractFileByPath.mockReturnValue(null);
     await expect(exportToMarkdown(notebook, app, settings)).rejects.toThrow("Invalid highlight type");
   });
+
+  test("MD file starts with expected metadata", async () => {
+    notebook.title = "Sample Book: A Tale";
+    notebook.authors = ["Ima Writer", "Al Gorithm"];
+
+    app.vault.getAbstractFileByPath.mockReturnValue(null);
+    await exportToMarkdown(notebook, app, settings);
+
+    const content = app.vault.create.mock.calls[0][1] as string;
+    expect(content).toMatch(
+      /^---\ntags:\n\s{2}- books\ntitle: Sample Book: A Tale\nauthor:\n\s{2}- Ima Writer\n\s{2}- Al Gorithm\n---/,
+    );
+  });
 });
