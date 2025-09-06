@@ -94,7 +94,7 @@ describe("Parser", () => {
       </body></html>`;
 
     const parsed = parseKindleHtml(htmlString);
-    expect(parsed.chapterHighlights[0].highlights[0].sectionTitle).toBe('Section Title');
+    expect(parsed.chapterHighlights[0].highlights[0].sectionTitle).toBe("Section Title");
   });
 
   test("returns location when present", () => {

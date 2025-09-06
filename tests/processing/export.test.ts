@@ -62,7 +62,7 @@ describe("Export", () => {
               type: "quote",
               pageNumber: 3,
               location: 5,
-              sectionTitle: "Section Title"
+              sectionTitle: "Section Title",
             },
           ],
         },
@@ -173,12 +173,8 @@ describe("Export", () => {
     await exportToMarkdown(notebook, app, settings);
 
     const content = app.vault.create.mock.calls[0][1] as string;
-    expect(content).toContain(
-      "> [!quote] Quote (Page 3): Section Title",
-    );
-    expect(content).toContain(
-      "> [!quote] Quote (Page 1)",
-    );
+    expect(content).toContain("> [!quote] Quote (Page 3): Section Title");
+    expect(content).toContain("> [!quote] Quote (Page 1)");
   });
 
   test("Includes location when present", async () => {
@@ -190,12 +186,8 @@ describe("Export", () => {
 
     const content = app.vault.create.mock.calls[0][1] as string;
     // prefers page number when both page and location are present
-    expect(content).toContain(
-      "> [!quote] Quote (Page 3): Section Title",
-    );
+    expect(content).toContain("> [!quote] Quote (Page 3): Section Title");
     // handles location when present
-    expect(content).toContain(
-      "> [!quote] Quote (Location 5)",
-    );
+    expect(content).toContain("> [!quote] Quote (Location 5)");
   });
 });
