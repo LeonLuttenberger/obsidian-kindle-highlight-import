@@ -61,6 +61,18 @@ describe("Export", () => {
               text: "Highlight 3",
               type: "quote",
               pageNumber: 3,
+              location: 5,
+              sectionTitle: "Section Title"
+            },
+          ],
+        },
+        {
+          chapterName: "Chapter 3",
+          highlights: [
+            {
+              text: "Highlight 4",
+              type: "quote",
+              location: 5,
             },
           ],
         },
@@ -150,6 +162,40 @@ describe("Export", () => {
     const content = app.vault.create.mock.calls[0][1] as string;
     expect(content).toMatch(
       /^---\ntags:\n\s{2}- books\ntitle: Sample Book: A Tale\nauthor:\n\s{2}- Ima Writer\n\s{2}- Al Gorithm\n---/,
+    );
+  });
+
+  test("Includes section title when present ", async () => {
+    notebook.title = "Sample Book: A Tale";
+    notebook.authors = ["Ima Writer", "Al Gorithm"];
+
+    app.vault.getAbstractFileByPath.mockReturnValue(null);
+    await exportToMarkdown(notebook, app, settings);
+
+    const content = app.vault.create.mock.calls[0][1] as string;
+    expect(content).toContain(
+      "> [!quote] Quote (Page 3): Section Title",
+    );
+    expect(content).toContain(
+      "> [!quote] Quote (Page 1)",
+    );
+  });
+
+  test("Includes location when present", async () => {
+    notebook.title = "Sample Book: A Tale";
+    notebook.authors = ["Ima Writer", "Al Gorithm"];
+
+    app.vault.getAbstractFileByPath.mockReturnValue(null);
+    await exportToMarkdown(notebook, app, settings);
+
+    const content = app.vault.create.mock.calls[0][1] as string;
+    // prefers page number when both page and location are present
+    expect(content).toContain(
+      "> [!quote] Quote (Page 3): Section Title",
+    );
+    // handles location when present
+    expect(content).toContain(
+      "> [!quote] Quote (Location 5)",
     );
   });
 });
