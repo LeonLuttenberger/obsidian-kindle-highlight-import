@@ -149,7 +149,7 @@ describe("Export", () => {
 
     const content = app.vault.create.mock.calls[0][1] as string;
     expect(content).toMatch(
-      /^---\ntags:\n\s{2}- books\ntitle: Sample Book: A Tale\nauthor:\n\s{2}- Ima Writer\n\s{2}- Al Gorithm\n---/,
+      /^---\ntags:\n\s{2}- books\ntitle: "Sample Book: A Tale"\nauthor:\n\s{2}- Ima Writer\n\s{2}- Al Gorithm\n---/,
     );
   });
 });
