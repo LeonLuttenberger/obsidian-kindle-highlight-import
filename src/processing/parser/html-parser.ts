@@ -25,6 +25,21 @@ function getPageNumber(text: string): number | undefined {
   return undefined;
 }
 
+function getLocation(text: string): number | undefined {
+  const matches = text.match(/Location (\d+)/);
+  if (matches) {
+    return Number(matches[1]);
+  }
+  return undefined;
+}
+function getSectionTitle(text: string): string | undefined {
+  const matches = text.match(/- (.+?) >./);
+  if (matches) {
+    return String(matches[1]).trim();
+  }
+  return undefined;
+}
+
 function getNoteType(text: string): "quote" | "note" {
   if (text.startsWith("Highlight")) {
     return "quote";
@@ -68,10 +83,14 @@ export function parseKindleHtml(text: string): BookHighlights {
     }
 
     const pageNumber = getPageNumber(noteHeadingTextContent);
-
+    const location = getLocation(noteHeadingTextContent);
+    const sectionTitle = getSectionTitle(noteHeadingTextContent);
+    console.log(sectionTitle);
     chapter.highlights.push({
       text: noteTextContent,
       pageNumber: pageNumber,
+      location: location,
+      sectionTitle: sectionTitle,
       type: getNoteType(noteHeadingTextContent),
     });
   });

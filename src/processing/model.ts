@@ -3,6 +3,8 @@ export type HightlightType = "quote" | "note";
 export interface Highlight {
   text: string;
   pageNumber?: number;
+  location?: number;
+  sectionTitle?: string;
   type: HightlightType;
 }
 

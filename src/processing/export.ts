@@ -19,14 +19,18 @@ function highlightToQuoteString(highlight: Highlight): string {
   } else if (highlight.type === "quote") {
     if (highlight.pageNumber) {
       titleLine = `> [!quote] Quote (Page ${highlight.pageNumber})`;
+    } else if (highlight.location) {
+      titleLine = `> [!quote] Quote (Location ${highlight.location})`;
     } else {
       titleLine = "> [!quote] Quote";
     }
   } else {
     throw new Error(`Invalid highlight type: ${highlight.type}`);
   }
-
   const textLine = highlight.text;
+  if (highlight.sectionTitle) {
+    return `${titleLine}: ${highlight.sectionTitle}\n${textLine}`;
+  }
   return `${titleLine}\n${textLine}`;
 }
 
