@@ -83,7 +83,33 @@ describe("Parser", () => {
     expect(chapterHighlights[1].highlights[1].type).toBe("note");
     expect(chapterHighlights[1].highlights[1].pageNumber).toBe(28);
   });
+  test("returns section title when present", () => {
+    const htmlString = `
+      <html><body>
+        <div class="bookTitle">Title</div>
+        <div class="authors">Author</div>
+        <div class="sectionHeading">Chapter</div>
+        <div class="noteHeading">Highlight - Section Title > Location 10</div>
+        <div class="noteText">Quote</div>
+      </body></html>`;
 
+    const parsed = parseKindleHtml(htmlString);
+    expect(parsed.chapterHighlights[0].highlights[0].sectionTitle).toBe("Section Title");
+  });
+
+  test("returns location when present", () => {
+    const htmlString = `
+      <html><body>
+        <div class="bookTitle">Title</div>
+        <div class="authors">Author</div>
+        <div class="sectionHeading">Chapter</div>
+        <div class="noteHeading">Highlight . Location 10</div>
+        <div class="noteText">Quote</div>
+      </body></html>`;
+
+    const parsed = parseKindleHtml(htmlString);
+    expect(parsed.chapterHighlights[0].highlights[0].location).toBe(10);
+  });
   test("throws when required elements missing", () => {
     const badHtml = `<html><body><div class="authors">Author</div></body></html>`;
     expect(() => parseKindleHtml(badHtml)).toThrow("bookTitle");
