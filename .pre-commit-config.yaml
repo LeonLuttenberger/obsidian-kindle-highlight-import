@@ -3,7 +3,7 @@ ci:
 
 repos:
   - repo: https://github.com/rhysd/actionlint
-    rev: v1.7.9
+    rev: v1.7.10
     hooks:
       - id: actionlint
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -12,6 +12,6 @@ repos:
       - id: trailing-whitespace
       - id: end-of-file-fixer
   - repo: https://github.com/biomejs/pre-commit
-    rev: v2.3.8
+    rev: v2.3.10
     hooks:
       - id: biome-check
