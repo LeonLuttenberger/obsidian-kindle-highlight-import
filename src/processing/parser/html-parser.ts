@@ -57,14 +57,16 @@ export function parseKindleHtml(text: string): BookHighlights {
 
     const noteTextContent = element.textContent?.trim();
     if (!noteTextContent) {
-      throw Error("Note text is empty.");
+      // Skip empty note text elements - these can occur in some Kindle exports
+      return;
     }
 
     const noteHeadingElement = element.previousElementSibling;
     const noteHeadingTextContent = noteHeadingElement?.textContent?.trim();
 
     if (!noteHeadingTextContent || noteHeadingElement?.className !== "noteHeading") {
-      throw Error("Note heading is empty or not found.");
+      // Skip notes without valid headings
+      return;
     }
 
     const pageNumber = getPageNumber(noteHeadingTextContent);

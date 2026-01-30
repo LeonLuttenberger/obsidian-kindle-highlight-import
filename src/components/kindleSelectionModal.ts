@@ -46,8 +46,13 @@ export class KindleSelectionModal extends SuggestModal<TFile> {
       return;
     }
 
-    notebookPromise.then((notebook) => {
-      exportToMarkdown(notebook, this.app, this.settings);
-    });
+    notebookPromise
+      .then((notebook) => {
+        return exportToMarkdown(notebook, this.app, this.settings);
+      })
+      .catch((error) => {
+        console.error("Error parsing Kindle file:", error);
+        new Notice(`Failed to import Kindle highlights: ${error.message}`);
+      });
   }
 }

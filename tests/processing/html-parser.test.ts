@@ -89,26 +89,34 @@ describe("Parser", () => {
     expect(() => parseKindleHtml(badHtml)).toThrow("bookTitle");
   });
 
-  test("throws when note heading missing", () => {
+  test("skips notes with missing heading", () => {
     const badHtml = `
       <html><body>
         <div class="bookTitle">Title</div>
         <div class="authors">Author</div>
         <div class="sectionHeading">Chapter</div>
-        <div class="noteText">Text</div>
+        <div class="noteText">Text without heading</div>
+        <div class="noteHeading">Highlight - Page 1</div>
+        <div class="noteText">Valid text</div>
       </body></html>`;
-    expect(() => parseKindleHtml(badHtml)).toThrow("Note heading");
+    const parsed = parseKindleHtml(badHtml);
+    expect(parsed.chapterHighlights[0].highlights.length).toBe(1);
+    expect(parsed.chapterHighlights[0].highlights[0].text).toBe("Valid text");
   });
 
-  test("throws when previous note heading absent", () => {
+  test("skips notes when previous note heading absent", () => {
     const badHtml = `
       <html><body>
         <div class="bookTitle">Title</div>
         <div class="authors">Author</div>
         <div class="sectionHeading">Chapter</div>
         <div><div class="noteText">Text</div></div>
+        <div class="noteHeading">Highlight - Page 1</div>
+        <div class="noteText">Valid text</div>
       </body></html>`;
-    expect(() => parseKindleHtml(badHtml)).toThrow("Note heading is empty or not found");
+    const parsed = parseKindleHtml(badHtml);
+    expect(parsed.chapterHighlights[0].highlights.length).toBe(1);
+    expect(parsed.chapterHighlights[0].highlights[0].text).toBe("Valid text");
   });
 
   test("returns undefined page number when not present", () => {
@@ -146,7 +154,7 @@ describe("Parser", () => {
     expect(() => parseKindleHtml(badHtml)).toThrow("Chapter name is empty");
   });
 
-  test("throws when note text empty", () => {
+  test("skips empty note text", () => {
     const badHtml = `
       <html><body>
         <div class="bookTitle">Title</div>
@@ -154,8 +162,12 @@ describe("Parser", () => {
         <div class="sectionHeading">Chapter</div>
         <div class="noteHeading">Highlight - Page 1</div>
         <div class="noteText"></div>
+        <div class="noteHeading">Highlight - Page 2</div>
+        <div class="noteText">Valid text</div>
       </body></html>`;
-    expect(() => parseKindleHtml(badHtml)).toThrow("Note text is empty");
+    const parsed = parseKindleHtml(badHtml);
+    expect(parsed.chapterHighlights[0].highlights.length).toBe(1);
+    expect(parsed.chapterHighlights[0].highlights[0].text).toBe("Valid text");
   });
 
   test("keeps author order when name has multiple commas", () => {
