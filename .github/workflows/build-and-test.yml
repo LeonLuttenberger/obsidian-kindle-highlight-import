@@ -37,7 +37,7 @@ jobs:
       - name: Run Tests
         run: npm run test
       - name: Upload Coverage to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
       - name: Upload Test Results to Codecov
@@ -46,7 +46,7 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
       - name: Save Build Output
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: build-artifact
           retention-days: 7
