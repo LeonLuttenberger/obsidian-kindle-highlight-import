@@ -40,11 +40,7 @@ jobs:
         uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-      - name: Upload Test Results to Codecov
-        if: ${{ !cancelled() }}
-        uses: codecov/test-results-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          report_type: test_results
       - name: Save Build Output
         uses: actions/upload-artifact@v7
         with:
