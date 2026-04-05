@@ -45,7 +45,7 @@ export class FileUploadModal extends Modal {
             notebook = parseKindleHtml(content);
           }
           await exportToMarkdown(notebook, this.app, this.settings);
-        } catch (error) {
+        } catch (error: any) {
           console.error("Error parsing Kindle file:", error);
           new Notice(`Failed to import Kindle highlights: ${error.message}`);
         }
