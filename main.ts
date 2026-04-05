@@ -5,7 +5,7 @@ import { KindleSelectionModal } from "src/components/kindleSelectionModal";
 import { DefaultSettings, type KindleImportPluginSettings } from "src/settings/pluginSettings";
 
 export default class KindleImportPlugin extends Plugin {
-  settings: KindleImportPluginSettings;
+  settings!: KindleImportPluginSettings;
 
   async onload() {
     await this.loadSettings();

@@ -44,7 +44,7 @@ describe("KindleSelectionModal", () => {
     const modal = new KindleSelectionModal(app, settings);
     const file = { extension: "html" } as TFile;
 
-    const done = whenCalledOnce(jest.mocked(exportToMarkdown));
+    const done = whenCalledOnce(jest.mocked(exportToMarkdown) as any);
 
     modal.onChooseSuggestion(file, new MouseEvent("click"));
 
@@ -66,7 +66,7 @@ describe("KindleSelectionModal", () => {
     const modal = new KindleSelectionModal(app, settings);
     const file = { extension: "pdf" } as TFile;
 
-    const done = whenCalledOnce(jest.mocked(exportToMarkdown));
+    const done = whenCalledOnce(jest.mocked(exportToMarkdown) as any);
 
     modal.onChooseSuggestion(file, new MouseEvent("click"));
 
