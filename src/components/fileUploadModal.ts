@@ -1,4 +1,4 @@
-import { type App, Modal } from "obsidian";
+import { type App, Modal, Notice } from "obsidian";
 import { ACCEPTED_EXTENSIONS } from "src/components/component-utils";
 import { exportToMarkdown } from "src/processing/export";
 import type { BookHighlights } from "src/processing/model";
@@ -34,16 +34,21 @@ export class FileUploadModal extends Modal {
       const file = fileInput.files?.[0];
 
       if (file) {
-        let notebook: BookHighlights;
+        try {
+          let notebook: BookHighlights;
 
-        if (file.name.endsWith(".pdf")) {
-          const content = await file.arrayBuffer();
-          notebook = await parseKindlePdf(content);
-        } else {
-          const content = await file.text();
-          notebook = parseKindleHtml(content);
+          if (file.name.endsWith(".pdf")) {
+            const content = await file.arrayBuffer();
+            notebook = await parseKindlePdf(content);
+          } else {
+            const content = await file.text();
+            notebook = parseKindleHtml(content);
+          }
+          await exportToMarkdown(notebook, this.app, this.settings);
+        } catch (error) {
+          console.error("Error parsing Kindle file:", error);
+          new Notice(`Failed to import Kindle highlights: ${error.message}`);
         }
-        exportToMarkdown(notebook, this.app, this.settings);
       }
 
       this.close();
