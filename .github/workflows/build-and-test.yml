@@ -10,6 +10,7 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 env:
   NODE_VERSION: "22"
@@ -36,10 +37,16 @@ jobs:
         run: npm run build
       - name: Run Tests
         run: npm run test
-      - name: Upload Coverage to Codecov
+      # Upload Code Coverage (Looks for lcov.info / clover.xml)
+      - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v6
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          use_oidc: true
+      # Upload Test Execution Info (Looks for junit.xml)
+      - name: Upload test results to Codecov
+        uses: codecov/codecov-action@v6
+        with:
+          use_oidc: true
           report_type: test_results
       - name: Save Build Output
         uses: actions/upload-artifact@v7
