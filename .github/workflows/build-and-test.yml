@@ -37,7 +37,13 @@ jobs:
         run: npm run build
       - name: Run Tests
         run: npm run test
-      - name: Upload Coverage to Codecov
+      # Upload Code Coverage (Looks for lcov.info / clover.xml)
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v6
+        with:
+          use_oidc: true
+      # Upload Test Execution Info (Looks for junit.xml)
+      - name: Upload test results to Codecov
         uses: codecov/codecov-action@v6
         with:
           use_oidc: true
