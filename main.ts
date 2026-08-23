@@ -1,12 +1,11 @@
-import { type App, normalizePath, Plugin, PluginSettingTab, Setting } from "obsidian";
+import { type App, normalizePath, Plugin, PluginSettingTab, type SettingDefinitionItem } from "obsidian";
 import { FileUploadModal } from "src/components/fileUploadModal";
 import FolderSuggest from "src/components/folderSuggest";
 import { KindleSelectionModal } from "src/components/kindleSelectionModal";
 import { DefaultSettings, type KindleImportPluginSettings } from "src/settings/pluginSettings";
 
 export default class KindleImportPlugin extends Plugin {
-  settings!: KindleImportPluginSettings;
-
+  declare settings: KindleImportPluginSettings;
   async onload() {
     await this.loadSettings();
 
@@ -49,63 +48,57 @@ class KindleImportPluginSettingTab extends PluginSettingTab {
     this.plugin = plugin;
   }
 
-  display(): void {
-    const { containerEl } = this;
-
-    containerEl.empty();
-
-    new Setting(containerEl)
-      .setName("Notebook location")
-      .setDesc("Path to notebook folder")
-      .addText((text) => {
-        text
-          .setPlaceholder("Enter the path")
-          .setValue(this.plugin.settings.notebooksLocation)
-          .onChange(async (value) => {
-            this.plugin.settings.notebooksLocation = normalizePath(value);
-            await this.plugin.saveSettings();
+  getSettingDefinitions(): SettingDefinitionItem<string>[] {
+    return [
+      {
+        name: "Notebook location",
+        desc: "Path to notebook folder",
+        render: (setting) => {
+          setting.addText((text) => {
+            text
+              .setPlaceholder("Enter the path")
+              .setValue(this.plugin.settings.notebooksLocation)
+              .onChange(async (value) => {
+                this.plugin.settings.notebooksLocation = normalizePath(value);
+                await this.plugin.saveSettings();
+              });
+            new FolderSuggest(this.app, text.inputEl);
           });
-        new FolderSuggest(this.app, text.inputEl);
-      });
-
-    new Setting(containerEl)
-      .setName("Book notes location")
-      .setDesc("Path to book notes folder")
-      .addText((text) => {
-        text
-          .setPlaceholder("Enter the path")
-          .setValue(this.plugin.settings.exportLocation)
-          .onChange(async (value) => {
-            this.plugin.settings.exportLocation = normalizePath(value);
-            await this.plugin.saveSettings();
+        },
+      },
+      {
+        name: "Book notes location",
+        desc: "Path to book notes folder",
+        render: (setting) => {
+          setting.addText((text) => {
+            text
+              .setPlaceholder("Enter the path")
+              .setValue(this.plugin.settings.exportLocation)
+              .onChange(async (value) => {
+                this.plugin.settings.exportLocation = normalizePath(value);
+                await this.plugin.saveSettings();
+              });
+            new FolderSuggest(this.app, text.inputEl);
           });
-        new FolderSuggest(this.app, text.inputEl);
-      });
-
-    new Setting(containerEl)
-      .setName("Query Goodreads")
-      .setDesc("If checked, the plugin will query Goodreads to generate a link to the book page")
-      .addToggle((toggle) =>
-        toggle.setValue(this.plugin.settings.queryGoodreads).onChange(async (value) => {
-          this.plugin.settings.queryGoodreads = value;
-          await this.plugin.saveSettings();
-          this.display();
-        }),
-      );
-
-    if (this.plugin.settings.queryGoodreads) {
-      new Setting(containerEl)
-        .setName("Goodreads user ID")
-        .setDesc("ID of your Goodreads user")
-        .addText((text) =>
-          text
-            .setPlaceholder("Enter the user ID")
-            .setValue(this.plugin.settings.goodreadsUserID ?? "")
-            .onChange(async (value) => {
-              this.plugin.settings.goodreadsUserID = value;
-              await this.plugin.saveSettings();
-            }),
-        );
-    }
+        },
+      },
+      {
+        name: "Query Goodreads",
+        desc: "If checked, the plugin will query Goodreads to generate a link to the book page",
+        control: {
+          type: "toggle",
+          key: "queryGoodreads",
+        },
+      },
+      {
+        name: "Goodreads user ID",
+        desc: "ID of your Goodreads user",
+        control: {
+          type: "text",
+          key: "goodreadsUserID",
+        },
+        visible: () => this.plugin.settings.queryGoodreads,
+      },
+    ] as SettingDefinitionItem<string>[];
   }
 }
